@@ -13,3 +13,15 @@ Board::Board()
     pieces.append(whiteKing);
     pieces.append(blackKing);
 }
+
+void Board::update(Move move)
+{
+    // TODO
+    return;
+}
+
+void Board::updateBackwards(Move move)
+{
+    // TODO
+    return;
+}

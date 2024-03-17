@@ -3,12 +3,16 @@
 
 #include <QList>
 
+#include "move.h"
 #include "piece.h"
 
 class Board
 {
 public:
     Board();
+
+    void update(Move move);
+    void updateBackwards(Move move);
 
 private:
     QList<Piece> pieces;

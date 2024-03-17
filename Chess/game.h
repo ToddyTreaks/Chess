@@ -4,8 +4,9 @@
 #include <QString>
 #include <QFile>
 #include <QDateTime>
+#include <QList>
 
-#include "moves.h"
+#include "move.h"
 
 class Game
 {
@@ -16,7 +17,7 @@ public:
     QDateTime date;
     QString place;
     QString result;
-    Moves moves;
+    QList<Move> moves;
 
     void toPGN(QFile file);
 };

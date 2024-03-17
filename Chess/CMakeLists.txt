@@ -24,7 +24,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         game.h game.cpp
-        moves.h moves.cpp
+
         move.h move.cpp
         position.h position.cpp
         piece.h piece.cpp
