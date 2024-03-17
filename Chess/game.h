@@ -12,6 +12,8 @@ class Game
 {
 public:
     Game();
+    Game(QFile file);
+
     QString nameWhite;
     QString nameBlack;
     QDateTime date;
@@ -20,6 +22,11 @@ public:
     QList<Move> moves;
 
     void toPGN(QFile file);
+
+private:
+    static const long MAX_PGN_CHARACTERS = 1024;
+
+    void parsePGN(QString fileContent);
 };
 
 #endif // GAME_H
