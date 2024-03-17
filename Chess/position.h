@@ -6,9 +6,10 @@ class Position
 {
 public:
     Position();
+    Position(int row, int column);
 
-    int x;
-    int y;
+    int row;
+    int column;
 };
 
 #endif // POSITION_H
