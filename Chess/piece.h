@@ -10,14 +10,15 @@ class Piece
 {
 public:
     Piece();
+    Piece(QString name, QString color, Position position);
 
     QString toString();
 
 private:
     QString name;
     QString color;
-    QIcon icon;
     Position position;
+    QIcon icon;
 };
 
 #endif // PIECE_H
