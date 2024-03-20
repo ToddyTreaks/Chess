@@ -21,7 +21,7 @@ public:
 private:
     Board board;
     QList<Move> moves;
-    QList<Piece> pieces;
+    QMap<Position, Piece> pieces;
     QList<Piece> takenPieces;
 
     void parsePgn(QString fileLine);

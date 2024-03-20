@@ -14,7 +14,7 @@ public:
     Piece();
     Piece(QString name, QString color, Position position);
 
-    static Piece findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QList<Piece> &pieces);
+    static Piece findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
 
     QString getName();
     QString getColor();
@@ -22,7 +22,7 @@ public:
     QString toString();
 
 private:
-    bool canGoTo(Position targetPosition, const QList<Piece> &pieces);
+    bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces);
 
     QString name;
     QString color;

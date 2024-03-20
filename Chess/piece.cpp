@@ -1,5 +1,7 @@
 #include "piece.h"
 
+#include <QMap>
+
 #include "board.h"
 
 Piece::Piece() {}
@@ -12,14 +14,12 @@ Piece::Piece(QString name, QString color, Position position)
     icon = QIcon(iconFileName);
 }
 
-Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QList<Piece> &pieces)
+Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
 {
     QList<Piece> candidates;
-
-    QListIterator iterator(pieces);
-    while (iterator.hasNext())
+    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
-        Piece actualBoardPiece = iterator.next();
+        Piece actualBoardPiece = iterator->second;
 
         if (actualBoardPiece.getColor() == color && actualBoardPiece.getPngIdentifier() == pngIdentifier)
         {
