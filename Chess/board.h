@@ -15,8 +15,7 @@ public:
     void updateBackwards(Move move);
 
 private:
-    QList<Piece> pieces;
-    QList<Piece> takenPieces;
+    Piece * pieces[8][8];
 };
 
 #endif // BOARD_H

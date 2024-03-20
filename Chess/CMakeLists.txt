@@ -23,13 +23,17 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Chess
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        game.h game.cpp
-
+        gamemanager.h gamemanager.cpp
         move.h move.cpp
         position.h position.cpp
         piece.h piece.cpp
         board.h board.cpp
-        gamemanager.h gamemanager.cpp
+        pieces/king.h pieces/king.cpp
+        pieces/queen.h pieces/queen.cpp
+        pieces/pawn.h pieces/pawn.cpp
+        pieces/rook.h pieces/rook.cpp
+        pieces/bishop.h pieces/bishop.cpp
+        pieces/knight.h pieces/knight.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Chess APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

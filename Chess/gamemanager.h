@@ -1,25 +1,35 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
+#include <QString>
+#include <QFile>
+#include <QDateTime>
 #include <QList>
 
-#include "board.h"
 #include "move.h"
+#include "board.h"
+#include "position.h"
 
 class GameManager
 {
 public:
     GameManager();
-    GameManager(QList<Move> gameMoves);
+    GameManager(QFile file);
 
-    void nextMove();
-    void previousMove();
-    void drawBoard();
+    void toPgn(QFile file);
 
 private:
     Board board;
-    QList<Move> previousMoves;
-    QList<Move> nextMoves;
+    QList<Move> moves;
+    QList<Piece> pieces;
+    QList<Piece> takenPieces;
+
+    void parsePgn(QString fileLine);
+    bool isEndingIndication(QString pgnInstruction);
+    bool isMoveNumber(QString pgnInstruction);
+    void instanciateNewMove(QString pgnInstruction);
+    Position getPrerequisite(QString pgnInstruction);
+    Position getNextPosition(QString pgnInstruction);
 };
 
 #endif // GAMEMANAGER_H
