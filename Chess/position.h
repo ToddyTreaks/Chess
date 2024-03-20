@@ -10,6 +10,9 @@ public:
 
     int row;
     int column;
+
+    bool operator<(const Position& other) const;
+
 };
 
 #endif // POSITION_H

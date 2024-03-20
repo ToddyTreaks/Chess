@@ -1,6 +1,14 @@
 #include "king.h"
 
 King::King() {}
+
+
 bool King::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces) {
-    return true;
-}
+
+    int x_target = std::abs(targetPosition.column - position.column);
+    int y_target = std::abs(targetPosition.row - position.row);
+
+    if ((x_target == 1 && y_target == 1) || (x_target + y_target ==1))
+        return true;
+
+    return false;}

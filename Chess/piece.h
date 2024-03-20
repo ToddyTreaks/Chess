@@ -5,6 +5,7 @@
 #include <QIcon>
 
 #include "position.h"
+#include <QMap>
 
 class Board;
 
