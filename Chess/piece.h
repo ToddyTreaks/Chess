@@ -20,14 +20,14 @@ public:
     QString getColor();
     QString getPngIdentifier();
     QString toString();
+    Position position;
 
 private:
-    bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces);
+    virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces);
 
     QString name;
     QString color;
     QString pngIdentifier;
-    Position position;
     QIcon icon;
 };
 

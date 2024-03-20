@@ -45,3 +45,8 @@ QString Piece::getPngIdentifier()
 {
     return pngIdentifier;
 }
+
+bool Piece::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces)
+{
+    return true;
+}
