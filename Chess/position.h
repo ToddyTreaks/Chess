@@ -1,6 +1,7 @@
 #ifndef POSITION_H
 #define POSITION_H
 
+#include <QString>
 
 class Position
 {
@@ -10,6 +11,8 @@ public:
 
     int row;
     int column;
+
+    QString toString();
 
     bool operator<(const Position& other) const;
 

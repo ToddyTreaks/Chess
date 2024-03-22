@@ -1,8 +1,20 @@
 #include "gamemanager.h"
 
 #include <QTextStream>
+#include <QDebug>
+
+#include "pieces/bishop.h"
+#include "pieces/king.h"
+#include "pieces/knight.h"
+#include "pieces/pawn.h"
+#include "pieces/queen.h"
+#include "pieces/rook.h"
 
 GameManager::GameManager() {}
+
+GameManager::GameManager(QString fileName)
+    : GameManager(QFile(fileName))
+{}
 
 GameManager::GameManager(QFile file)
 {
@@ -15,28 +27,75 @@ GameManager::GameManager(QFile file)
     QString fileLine;
     while (stream.readLineInto(&fileLine))
     {
+        qDebug() << "New line : " <<fileLine << "\n";
         parsePgn(fileLine);
     }
 }
 
 void GameManager::parsePgn(QString fileLine)
 {
+    createStartingPieces();
+
     QStringList pgnInstructions;
     pgnInstructions = fileLine.split(" ");
 
-    QListIterator iterator(pgnInstructions);
+    QString color = "White";
 
+    QListIterator iterator(pgnInstructions);
     while (iterator.hasNext())
     {
         QString pgnInstruction = iterator.next();
 
+        qDebug() << "New instruction : " << pgnInstruction << "\n";
+
         if (!isEndingIndication(pgnInstruction) && !isMoveNumber(pgnInstruction))
         {
-            instanciateNewMove(pgnInstruction);
+            instanciateNewMove(pgnInstruction, color);
+        }
+
+        if (color == "White")
+        {
+            color = "Black";
+        }
+        else
+        {
+            color = "White";
         }
 
     }
 
+}
+
+void GameManager::createStartingPieces()
+{
+    pieces.insert(Position(5, 1), Piece("King", "White", Position(5, 1)));
+    pieces.insert(Position(4, 1), Piece("Queen", "White", Position(4, 1)));
+    pieces.insert(Position(3, 1), Piece("Bishop", "White", Position(3, 1)));
+    pieces.insert(Position(6, 1), Piece("Bishop", "White", Position(6, 1)));
+    pieces.insert(Position(2, 1), Piece("Knight", "White", Position(2, 1)));
+    pieces.insert(Position(7, 1), Piece("Knight", "White", Position(7, 1)));
+    pieces.insert(Position(1, 1), Piece("Rook", "White", Position(1, 1)));
+    pieces.insert(Position(8, 1), Piece("Rook", "White", Position(8, 1)));
+
+    for (int i=0; i<8; i++)
+    {
+        pieces.insert(Position(i+1, 2), Piece("Pawn", "White", Position(i+1, 2)));
+    }
+
+    pieces.insert(Position(5, 8), Piece("King", "Black", Position(5, 8)));
+    pieces.insert(Position(4, 8), Piece("Queen", "Black", Position(4, 8)));
+    pieces.insert(Position(3, 8), Piece("Bishop", "Black", Position(3, 8)));
+    pieces.insert(Position(6, 8), Piece("Bishop", "Black", Position(6, 8)));
+    pieces.insert(Position(2, 8), Piece("Knight", "Black", Position(2, 8)));
+    pieces.insert(Position(7, 8), Piece("Knight", "Black", Position(7, 8)));
+    pieces.insert(Position(1, 8), Piece("Rook", "Black", Position(1, 8)));
+    pieces.insert(Position(8, 8), Piece("Rook", "Black", Position(8, 8)));
+
+    for (int i=0; i<8; i++)
+    {
+        pieces.insert(Position(i+1, 7), Piece("Pawn", "Black", Position(i+1, 7)));
+    }
+    return;
 }
 
 bool GameManager::isEndingIndication(QString pgnInstruction)
@@ -51,7 +110,7 @@ bool GameManager::isMoveNumber(QString pgnInstruction)
     return (pgnInstruction.last(1) == ".");
 }
 
-void GameManager::instanciateNewMove(QString pgnInstruction)
+void GameManager::instanciateNewMove(QString pgnInstruction, QString color)
 {
     QString firstLetter;
     firstLetter = pgnInstruction.first(1);
@@ -74,13 +133,12 @@ void GameManager::instanciateNewMove(QString pgnInstruction)
         return;
     }
 
-    QString restOfInstruction = pgnInstruction.sliced(1);
-    Position prerequisite = getPrerequisite(restOfInstruction);
-    Position nextPosition = getNextPosition(restOfInstruction);
-    if (firstLetter == "K")
-    {
-        return;
-    }
+    Position prerequisite = getPrerequisite(pgnInstruction);
+    Position nextPosition = getNextPosition(pgnInstruction);
+    qDebug() << "prerequisite : " << prerequisite.toString() << ", nextPosition : " << nextPosition.toString() << "\n";
+
+    Move newMove(Piece::findPiece("K", color, nextPosition, prerequisite, pieces), nextPosition);
+    moves.append(newMove);
 
     return;
 
@@ -88,11 +146,16 @@ void GameManager::instanciateNewMove(QString pgnInstruction)
 
 Position GameManager::getPrerequisite(QString pgnInstruction)
 {
-    Position position(0, 0);
+    if (!isValidPieceInput(pgnInstruction.at(0)))
+    {
+        pgnInstruction = pgnInstruction.sliced(1);
+    }
+
+    Position prerequisitePosition(0, 0);
     if (pgnInstruction.size() < 2)
     {
         // TODO error
-        return position;
+        return prerequisitePosition;
     }
     QChar firstLetter, secondLetter, thirdLetter;
     firstLetter = pgnInstruction.at(0);
@@ -100,51 +163,76 @@ Position GameManager::getPrerequisite(QString pgnInstruction)
 
     if (firstLetter.isLetter() && firstLetter != 'x' && secondLetter == 'x' || secondLetter.isNumber())
     {
-        position.column = firstLetter.digitValue() - QChar('a').digitValue();
-        return position;
+        prerequisitePosition.column = firstLetter.digitValue() - QChar('a').digitValue();
+        return prerequisitePosition;
     }
 
     if (firstLetter.isNumber() && secondLetter.isLetter())
     {
-        position.row = firstLetter.digitValue() - QChar('1').digitValue();
-        return position;
+        prerequisitePosition.row = firstLetter.digitValue() - QChar('1').digitValue();
+        return prerequisitePosition;
     }
 
     if (pgnInstruction.size() < 3)
     {
-        return position;
+        return prerequisitePosition;
     }
 
     secondLetter = pgnInstruction.at(2);
     if (firstLetter.isLetter() && secondLetter.isNumber() && secondLetter.isLetter())
     {
-        position.column = firstLetter.digitValue() - QChar('a').digitValue();
-        position.row = firstLetter.digitValue() - QChar('1').digitValue();
-        return position;
+        prerequisitePosition.column = firstLetter.digitValue() - QChar('a').digitValue();
+        prerequisitePosition.row = firstLetter.digitValue() - QChar('1').digitValue();
+        return prerequisitePosition;
     }
 
     // TODO error
-    return position;
+    return prerequisitePosition;
 }
 
 Position GameManager::getNextPosition(QString pgnInstruction)
 {
     Position position(0, 0);
-    while (pgnInstruction.size() > 2 || !pgnInstruction.back().isNumber())
+    while (pgnInstruction.size() > 2 && !isValidColumnInput(pgnInstruction.back()))
     {
         pgnInstruction.removeLast();
     }
-
     if (pgnInstruction.size() == 0)
     {
         //TODO error
         return position;
     }
 
-    position.row =  pgnInstruction.back().digitValue() - QChar('1').digitValue();
+    position.row =  rowNumber(pgnInstruction.back());
     pgnInstruction.removeLast();
-    position.column = pgnInstruction.back().digitValue() - QChar('a').digitValue();
+    position.column =  columnNumber(pgnInstruction.back());
     return position;
+}
+
+bool GameManager::isValidPieceInput(QChar pgnChar)
+{
+    QList<QChar> validPieceInputList = { 'K', 'Q', 'B', 'N', 'R'};
+    return (validPieceInputList.contains(pgnChar));
+}
+
+bool GameManager::isValidRowInput(QChar pgnChar)
+{
+    return ('a' <= pgnChar && pgnChar <= 'h');
+}
+
+bool GameManager::isValidColumnInput(QChar pgnChar)
+{
+    return ('1' <= pgnChar && pgnChar <= '8');
+}
+
+int GameManager::rowNumber(QChar rowInput)
+{
+    return rowInput.unicode() - QChar('1').unicode() + 1;
+}
+
+int GameManager::columnNumber(QChar columnInput)
+{
+    return columnInput.unicode() - QChar('a').unicode() + 1;
 }
 
 

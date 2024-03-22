@@ -34,6 +34,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         pieces/rook.h pieces/rook.cpp
         pieces/bishop.h pieces/bishop.cpp
         pieces/knight.h pieces/knight.cpp
+        pgnTests/test1.pgn
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Chess APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

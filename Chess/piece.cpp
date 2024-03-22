@@ -16,6 +16,14 @@ Piece::Piece(QString name, QString color, Position position)
 
 Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
 {
+    if (pieces.isEmpty())
+    {
+        //TODO error
+        Piece piece;
+        return piece;
+    }
+
+
     QList<Piece> candidates;
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
@@ -27,7 +35,8 @@ Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPositi
         }
 
     }
-    return candidates.first();
+    Piece piece;
+    return piece;
 
 }
 

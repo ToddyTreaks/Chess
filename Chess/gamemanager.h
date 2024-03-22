@@ -14,6 +14,7 @@ class GameManager
 {
 public:
     GameManager();
+    GameManager(QString fileName);
     GameManager(QFile file);
 
     void toPgn(QFile file);
@@ -24,12 +25,19 @@ private:
     QMap<Position, Piece> pieces;
     QList<Piece> takenPieces;
 
+    void createStartingPieces();
+
     void parsePgn(QString fileLine);
     bool isEndingIndication(QString pgnInstruction);
     bool isMoveNumber(QString pgnInstruction);
-    void instanciateNewMove(QString pgnInstruction);
+    void instanciateNewMove(QString pgnInstruction, QString color);
     Position getPrerequisite(QString pgnInstruction);
     Position getNextPosition(QString pgnInstruction);
+    bool isValidPieceInput(QChar pgnChar);
+    bool isValidRowInput(QChar pgnChar);
+    bool isValidColumnInput(QChar pgnChar);
+    int rowNumber(QChar rowInput);
+    int columnNumber(QChar columnInput);
 };
 
 #endif // GAMEMANAGER_H

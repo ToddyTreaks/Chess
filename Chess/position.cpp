@@ -17,3 +17,8 @@ bool Position::operator<(const Position& other) const {
         // If rows are equal, compare columns
         return column < other.column;
 }
+
+QString Position::toString()
+{
+    return QString("(%1, %2)").arg(row).arg(column);
+}
