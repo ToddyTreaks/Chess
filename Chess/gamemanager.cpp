@@ -75,32 +75,50 @@ void GameManager::parsePgn(QString fileLine)
 
 void GameManager::createStartingPieces()
 {
-    pieces.insert(Position(5, 1), King("White", Position(5, 1)));
-    pieces.insert(Position(4, 1), Queen("White", Position(4, 1)));
-    pieces.insert(Position(3, 1), Bishop("White", Position(3, 1)));
-    pieces.insert(Position(6, 1), Bishop("White", Position(6, 1)));
-    pieces.insert(Position(2, 1), Knight("White", Position(2, 1)));
-    pieces.insert(Position(7, 1), Knight("White", Position(7, 1)));
-    pieces.insert(Position(1, 1), Rook("White", Position(1, 1)));
-    pieces.insert(Position(8, 1), Rook("White", Position(8, 1)));
+    King* wKing = new King("White", Position(5, 1));
+    pieces.insert(Position(5, 1), wKing);
+    Queen* wQueen = new Queen("White", Position(4, 1));
+    pieces.insert(Position(4, 1), wQueen);
+    Bishop* wBishop1 = new Bishop("White", Position(3, 1));
+    pieces.insert(Position(3, 1), wBishop1);
+    Bishop* wBishop2 = new Bishop("White", Position(6, 1));
+    pieces.insert(Position(6, 1), wBishop2);
+    Knight* wKnight1 = new Knight("White", Position(2, 1));
+    pieces.insert(Position(2, 1), wKnight1);
+    Knight* wKnight2 = new Knight("White", Position(7, 1));
+    pieces.insert(Position(7, 1), wKnight2);
+    Rook* wRook1 = new Rook("White", Position(1, 1));
+    pieces.insert(Position(1, 1), wRook1);
+    Rook* wRook2 = new Rook("White", Position(8, 1));
+    pieces.insert(Position(8, 1), wRook2);
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(i+1, 2), Pawn("White", Position(i+1, 2)));
+        Pawn* wPawn = new Pawn("White", Position(i+1, 2));
+        pieces.insert(Position(i+1, 2), wPawn);
     }
 
-    pieces.insert(Position(5, 8), King("Black", Position(5, 8)));
-    pieces.insert(Position(4, 8), Queen("Black", Position(4, 8)));
-    pieces.insert(Position(3, 8), Bishop("Black", Position(3, 8)));
-    pieces.insert(Position(6, 8), Bishop("Black", Position(6, 8)));
-    pieces.insert(Position(2, 8), Knight("Black", Position(2, 8)));
-    pieces.insert(Position(7, 8), Knight("Black", Position(7, 8)));
-    pieces.insert(Position(1, 8), Rook("Black", Position(1, 8)));
-    pieces.insert(Position(8, 8), Rook("Black", Position(8, 8)));
+    King* bKing = new King ("Black", Position(5, 8));
+    pieces.insert(Position(5, 8), bKing);
+    Queen* bQueen = new Queen ("Black", Position(4, 8));
+    pieces.insert(Position(4, 8), bQueen);
+    Bishop* bBishop1 = new Bishop ("Black", Position(3, 8));
+    pieces.insert(Position(3, 8), bBishop1);
+    Bishop* bBishop2 = new Bishop ("Black", Position(6, 8));
+    pieces.insert(Position(6, 8), bBishop2);
+    Knight* bKnight1 = new Knight ("Black", Position(2, 8));
+    pieces.insert(Position(2, 8), bKnight1);
+    Knight* bKnight2 = new Knight ("Black", Position(7, 8));
+    pieces.insert(Position(7, 8), bKnight2);
+    Rook* bRook1 = new Rook ("Black", Position(1, 8));
+    pieces.insert(Position(1, 8), bRook1);
+    Rook* bRook2 = new Rook ("Black", Position(8, 8));
+    pieces.insert(Position(8, 8), bRook2);
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(i+1, 7), Pawn("Black", Position(i+1, 7)));
+        Pawn* bPawn = new Pawn("Black", Position(i+1, 7));
+        pieces.insert(Position(i+1, 7), bPawn);
     }
     return;
 }

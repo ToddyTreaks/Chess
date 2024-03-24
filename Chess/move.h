@@ -10,12 +10,12 @@ class Move
 {
 public:
     Move();
-    Move(Piece piece, Position nextPosition);
+    Move(Piece* piece, Position nextPosition);
 
     QString toString();
 
 private:
-    Piece piece;
+    Piece* piece;
     Position nextPosition;
 };
 

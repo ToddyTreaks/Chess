@@ -30,21 +30,20 @@ QString Piece::toString()
     return pgnIdentifier;
 }
 
-Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
+Piece* Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
 {
     if (pieces.isEmpty())
     {
         //TODO error
-        Piece piece;
-        return piece;
+        return NULL;
     }
 
-    QList<Piece> candidates;
+    QList<Piece*> candidates;
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
-        Piece actualBoardPiece = iterator->second;
+        Piece* actualBoardPiece = iterator->second;
 
-        if (actualBoardPiece.getColor() == color && actualBoardPiece.getPgnIdentifier() == pngIdentifier)
+        if (actualBoardPiece->getColor() == color && actualBoardPiece->getPgnIdentifier() == pngIdentifier)
         {
             candidates.append(actualBoardPiece);
         }
@@ -54,18 +53,18 @@ Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPositi
     QListIterator iterator(candidates);
     while (iterator.hasNext())
     {
-        Piece candidate = iterator.next();
-        if (candidate.matchPosition(nextPosition, prerequisite, pieces))
+        Piece* candidate = iterator.next();
+        if (candidate->matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;
         }
     }
-    Piece piece;
-    return piece;
+    //TODO error
+    return NULL;
 
 }
 
-bool Piece::matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
+bool Piece::matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces)
 {
     if (prerequisite.row != 0 && prerequisite.row != position.row)
     {
@@ -78,9 +77,4 @@ bool Piece::matchPosition(Position nextPosition, Position prerequisite, const QM
     }
 
     return canGoTo(nextPosition, pieces);
-}
-
-bool Piece::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces)
-{
-    return true;
 }

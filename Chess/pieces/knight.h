@@ -9,7 +9,7 @@ public:
     Knight();
     Knight(QString color, Position position);
 
-    virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces) override;
+    bool canGoTo(Position targetPosition, const QMap<Position, Piece*> &pieces);
 };
 
 #endif // KNIGHT_H

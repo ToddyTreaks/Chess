@@ -22,7 +22,7 @@ public:
 private:
     Board board;
     QList<Move> moves;
-    QMap<Position, Piece> pieces;
+    QMap<Position, Piece*> pieces;
     QList<Piece> takenPieces;
 
     void createStartingPieces();

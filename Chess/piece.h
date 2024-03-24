@@ -21,13 +21,13 @@ public:
     QString getPgnIdentifier();
     QString toString();
 
-    bool matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
+    bool matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
 
-    static Piece findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
+    static Piece* findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
 
 private:
 
-    virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces);
+    virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece*> &pieces) = 0;
 
     QString color;
     QString pgnIdentifier;
