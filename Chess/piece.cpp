@@ -27,7 +27,7 @@ QString Piece::getPgnIdentifier()
 
 QString Piece::toString()
 {
-    return pgnIdentifier;
+    return QString("%1, %2").arg(pgnIdentifier).arg(position.toString());
 }
 
 Piece* Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
@@ -54,6 +54,9 @@ Piece* Piece::findPiece(QString pngIdentifier, QString color, Position nextPosit
     while (iterator.hasNext())
     {
         Piece* candidate = iterator.next();
+        qDebug() << nextPosition.toString() << prerequisite.toString();
+        qDebug() << candidate->toString();
+        qDebug() << candidate->matchPosition(nextPosition, prerequisite, pieces);
         if (candidate->matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;

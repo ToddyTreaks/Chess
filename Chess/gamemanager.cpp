@@ -23,6 +23,8 @@ GameManager::GameManager(QFile file)
         return;
     }
 
+    createStartingPieces();
+
     QTextStream stream(&file);
     QString fileLine;
     while (stream.readLineInto(&fileLine))
@@ -39,11 +41,59 @@ GameManager::GameManager(QFile file)
     }
 }
 
+void GameManager::createStartingPieces()
+{
+    King* wKing = new King("White", Position(1, 5));
+    pieces.insert(Position(1, 5), wKing);
+    Queen* wQueen = new Queen("White", Position(1, 4));
+    pieces.insert(Position(1, 4), wQueen);
+    Bishop* wBishop1 = new Bishop("White", Position(1, 3));
+    pieces.insert(Position(1, 3), wBishop1);
+    Bishop* wBishop2 = new Bishop("White", Position(1, 6));
+    pieces.insert(Position(1, 6), wBishop2);
+    Knight* wKnight1 = new Knight("White", Position(1, 2));
+    pieces.insert(Position(1, 2), wKnight1);
+    Knight* wKnight2 = new Knight("White", Position(1, 7));
+    pieces.insert(Position(1, 7), wKnight2);
+    Rook* wRook1 = new Rook("White", Position(1, 1));
+    pieces.insert(Position(1, 1), wRook1);
+    Rook* wRook2 = new Rook("White", Position(1, 8));
+    pieces.insert(Position(1, 8), wRook2);
+
+    for (int i=0; i<8; i++)
+    {
+        Pawn* wPawn = new Pawn("White", Position(2, i+1));
+        pieces.insert(Position(2, i+1), wPawn);
+    }
+
+    King* bKing = new King ("Black", Position(8, 5));
+    pieces.insert(Position(8, 5), bKing);
+    Queen* bQueen = new Queen ("Black", Position(8, 4));
+    pieces.insert(Position(8, 4), bQueen);
+    Bishop* bBishop1 = new Bishop ("Black", Position(8, 3));
+    pieces.insert(Position(8, 3), bBishop1);
+    Bishop* bBishop2 = new Bishop ("Black", Position(8, 6));
+    pieces.insert(Position(8, 6), bBishop2);
+    Knight* bKnight1 = new Knight ("Black", Position(8, 2));
+    pieces.insert(Position(8, 2), bKnight1);
+    Knight* bKnight2 = new Knight ("Black", Position(8, 7));
+    pieces.insert(Position(8, 7), bKnight2);
+    Rook* bRook1 = new Rook ("Black", Position(8, 1));
+    pieces.insert(Position(8, 1), bRook1);
+    Rook* bRook2 = new Rook ("Black", Position(8, 8));
+    pieces.insert(Position(8, 8), bRook2);
+
+    for (int i=0; i<8; i++)
+    {
+        Pawn* bPawn = new Pawn("Black", Position(7, i+1));
+        pieces.insert(Position(7, i+1), bPawn);
+    }
+    return;
+}
+
 void GameManager::parsePgn(QString fileLine)
 {
     qDebug() << fileLine;
-
-    createStartingPieces();
 
     QStringList pgnInstructions;
     pgnInstructions = fileLine.split(" ");
@@ -58,69 +108,19 @@ void GameManager::parsePgn(QString fileLine)
         if (!isEndingIndication(pgnInstruction) && !isMoveNumber(pgnInstruction))
         {
             instanciateNewMove(pgnInstruction, color);
-        }
 
-        if (color == "White")
-        {
-            color = "Black";
-        }
-        else
-        {
-            color = "White";
+            if (color == "White")
+            {
+                color = "Black";
+            }
+            else
+            {
+                color = "White";
+            }
         }
 
     }
 
-}
-
-void GameManager::createStartingPieces()
-{
-    King* wKing = new King("White", Position(5, 1));
-    pieces.insert(Position(5, 1), wKing);
-    Queen* wQueen = new Queen("White", Position(4, 1));
-    pieces.insert(Position(4, 1), wQueen);
-    Bishop* wBishop1 = new Bishop("White", Position(3, 1));
-    pieces.insert(Position(3, 1), wBishop1);
-    Bishop* wBishop2 = new Bishop("White", Position(6, 1));
-    pieces.insert(Position(6, 1), wBishop2);
-    Knight* wKnight1 = new Knight("White", Position(2, 1));
-    pieces.insert(Position(2, 1), wKnight1);
-    Knight* wKnight2 = new Knight("White", Position(7, 1));
-    pieces.insert(Position(7, 1), wKnight2);
-    Rook* wRook1 = new Rook("White", Position(1, 1));
-    pieces.insert(Position(1, 1), wRook1);
-    Rook* wRook2 = new Rook("White", Position(8, 1));
-    pieces.insert(Position(8, 1), wRook2);
-
-    for (int i=0; i<8; i++)
-    {
-        Pawn* wPawn = new Pawn("White", Position(i+1, 2));
-        pieces.insert(Position(i+1, 2), wPawn);
-    }
-
-    King* bKing = new King ("Black", Position(5, 8));
-    pieces.insert(Position(5, 8), bKing);
-    Queen* bQueen = new Queen ("Black", Position(4, 8));
-    pieces.insert(Position(4, 8), bQueen);
-    Bishop* bBishop1 = new Bishop ("Black", Position(3, 8));
-    pieces.insert(Position(3, 8), bBishop1);
-    Bishop* bBishop2 = new Bishop ("Black", Position(6, 8));
-    pieces.insert(Position(6, 8), bBishop2);
-    Knight* bKnight1 = new Knight ("Black", Position(2, 8));
-    pieces.insert(Position(2, 8), bKnight1);
-    Knight* bKnight2 = new Knight ("Black", Position(7, 8));
-    pieces.insert(Position(7, 8), bKnight2);
-    Rook* bRook1 = new Rook ("Black", Position(1, 8));
-    pieces.insert(Position(1, 8), bRook1);
-    Rook* bRook2 = new Rook ("Black", Position(8, 8));
-    pieces.insert(Position(8, 8), bRook2);
-
-    for (int i=0; i<8; i++)
-    {
-        Pawn* bPawn = new Pawn("Black", Position(i+1, 7));
-        pieces.insert(Position(i+1, 7), bPawn);
-    }
-    return;
 }
 
 bool GameManager::isEndingIndication(QString pgnInstruction)
@@ -169,9 +169,13 @@ void GameManager::instanciateNewMove(QString pgnInstruction, QString color)
     if (isValidPieceInput(firstLetter))
     {
         Move newMove(Piece::findPiece((QString) firstLetter, color, nextPosition, prerequisite, pieces), nextPosition);
+        moves.append(newMove);
     }
-    Move newMove(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
-    moves.append(newMove);
+    else
+    {
+        Move newMove(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
+        moves.append(newMove);
+    }
 
     return;
 

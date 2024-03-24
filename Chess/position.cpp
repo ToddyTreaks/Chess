@@ -7,7 +7,8 @@ Position::Position(int row, int column)
     column(column)
 {}
 
-bool Position::operator<(const Position& other) const {
+bool Position::operator<(const Position& other) const
+{
     // Compare rows first
     if (row < other.row)
         return true;
@@ -20,5 +21,8 @@ bool Position::operator<(const Position& other) const {
 
 QString Position::toString()
 {
-    return QString("(%1, %2)").arg(row).arg(column);
+    QChar columnNumber = QString::number(column).front();
+    int columnLetterUnicode = QChar('a').unicode() + columnNumber.unicode() - QChar('1').unicode();
+    QChar columnLetter = QChar(columnLetterUnicode);
+    return QString("%1%2").arg(columnLetter).arg(row);
 }
