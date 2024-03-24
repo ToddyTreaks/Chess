@@ -13,11 +13,10 @@ class Piece
 {
 public:
     Piece();
-    Piece(QString name, QString color, Position position);
+    Piece(QString color, QString pgnIdentifier, Position position);
 
     Position position;
 
-    QString getName();
     QString getColor();
     QString getPgnIdentifier();
     QString toString();
@@ -30,7 +29,6 @@ private:
 
     virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces);
 
-    QString name;
     QString color;
     QString pgnIdentifier;
     QIcon icon;

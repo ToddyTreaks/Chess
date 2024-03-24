@@ -3,10 +3,12 @@
 
 #include "../piece.h"
 
-class Pawn : Piece
+class Pawn : public Piece
 {
 public:
     Pawn();
+    Pawn(QString color, Position position);
+
     virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces) override;
 };
 

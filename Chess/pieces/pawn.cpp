@@ -2,6 +2,9 @@
 
 Pawn::Pawn() {}
 
+Pawn::Pawn(QString color, Position position)
+    : Piece(color, "", position)
+{}
 
 bool Pawn::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces) {
 

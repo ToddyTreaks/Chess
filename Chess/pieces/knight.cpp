@@ -2,6 +2,9 @@
 
 Knight::Knight() {}
 
+Knight::Knight(QString color, Position position)
+    : Piece(color, "N", position)
+{}
 
 bool Knight::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces) {
 

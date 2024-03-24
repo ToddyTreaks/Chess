@@ -7,17 +7,12 @@
 
 Piece::Piece() {}
 
-Piece::Piece(QString name, QString color, Position position)
-    : name(name), color(color), position(position), icon()
+Piece::Piece(QString color, QString pgnIdentifier, Position position)
+    : color(color), pgnIdentifier(pgnIdentifier), position(position), icon()
 {
     //TODO : change this
     QString iconFileName("img/pawn_icon.png");
     icon = QIcon(iconFileName);
-}
-
-QString Piece::getName()
-{
-    return name;
 }
 
 QString Piece::getColor()
@@ -32,7 +27,7 @@ QString Piece::getPgnIdentifier()
 
 QString Piece::toString()
 {
-    return name;
+    return pgnIdentifier;
 }
 
 Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)

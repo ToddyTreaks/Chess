@@ -1,7 +1,11 @@
 #include "bishop.h"
 
-#include "../piece.h"
 Bishop::Bishop() {}
+
+Bishop::Bishop(QString color, Position position)
+    : Piece(color, "B", position)
+{}
+
 bool Bishop::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces) {
 
     int x_target = std::abs(targetPosition.column - position.column);
@@ -11,4 +15,4 @@ bool Bishop::canGoTo(Position targetPosition, const QMap<Position, Piece> &piece
         return true;
 
     return false;
-    }
+}

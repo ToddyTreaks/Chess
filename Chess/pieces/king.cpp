@@ -2,6 +2,9 @@
 
 King::King() {}
 
+King::King(QString color, Position position)
+    : Piece(color, "K", position)
+{}
 
 bool King::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces) {
 
