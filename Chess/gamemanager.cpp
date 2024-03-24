@@ -27,13 +27,22 @@ GameManager::GameManager(QFile file)
     QString fileLine;
     while (stream.readLineInto(&fileLine))
     {
-        qDebug() << "New line : " <<fileLine << "\n";
         parsePgn(fileLine);
+    }
+
+    qDebug() << "Moves :";
+    QListIterator iterator(moves);
+    while (iterator.hasNext())
+    {
+        Move move = iterator.next();
+        qDebug() << move.toString();
     }
 }
 
 void GameManager::parsePgn(QString fileLine)
 {
+    qDebug() << fileLine;
+
     createStartingPieces();
 
     QStringList pgnInstructions;
@@ -45,8 +54,6 @@ void GameManager::parsePgn(QString fileLine)
     while (iterator.hasNext())
     {
         QString pgnInstruction = iterator.next();
-
-        qDebug() << "New instruction : " << pgnInstruction << "\n";
 
         if (!isEndingIndication(pgnInstruction) && !isMoveNumber(pgnInstruction))
         {
@@ -112,10 +119,15 @@ bool GameManager::isMoveNumber(QString pgnInstruction)
 
 void GameManager::instanciateNewMove(QString pgnInstruction, QString color)
 {
-    QString firstLetter;
-    firstLetter = pgnInstruction.first(1);
+    if (pgnInstruction.size() < 1)
+    {
+        // TODO error
+        return;
+    }
+    QChar firstLetter;
+    firstLetter = pgnInstruction.at(0);
 
-    if (firstLetter == "O")
+    if (firstLetter == 'O')
     {
         if (pgnInstruction == "O-O-O")
         {
@@ -135,9 +147,12 @@ void GameManager::instanciateNewMove(QString pgnInstruction, QString color)
 
     Position prerequisite = getPrerequisite(pgnInstruction);
     Position nextPosition = getNextPosition(pgnInstruction);
-    qDebug() << "prerequisite : " << prerequisite.toString() << ", nextPosition : " << nextPosition.toString() << "\n";
 
-    Move newMove(Piece::findPiece("K", color, nextPosition, prerequisite, pieces), nextPosition);
+    if (isValidPieceInput(firstLetter))
+    {
+        Move newMove(Piece::findPiece((QString) firstLetter, color, nextPosition, prerequisite, pieces), nextPosition);
+    }
+    Move newMove(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
     moves.append(newMove);
 
     return;

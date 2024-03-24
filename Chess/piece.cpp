@@ -1,6 +1,7 @@
 #include "piece.h"
 
 #include <QMap>
+#include <QDebug>
 
 #include "board.h"
 
@@ -14,32 +15,6 @@ Piece::Piece(QString name, QString color, Position position)
     icon = QIcon(iconFileName);
 }
 
-Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
-{
-    if (pieces.isEmpty())
-    {
-        //TODO error
-        Piece piece;
-        return piece;
-    }
-
-
-    QList<Piece> candidates;
-    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
-    {
-        Piece actualBoardPiece = iterator->second;
-
-        if (actualBoardPiece.getColor() == color && actualBoardPiece.getPngIdentifier() == pngIdentifier)
-        {
-            candidates.append(actualBoardPiece);
-        }
-
-    }
-    Piece piece;
-    return piece;
-
-}
-
 QString Piece::getName()
 {
     return name;
@@ -50,9 +25,64 @@ QString Piece::getColor()
     return color;
 }
 
-QString Piece::getPngIdentifier()
+QString Piece::getPgnIdentifier()
 {
-    return pngIdentifier;
+    return pgnIdentifier;
+}
+
+QString Piece::toString()
+{
+    return name;
+}
+
+Piece Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
+{
+    if (pieces.isEmpty())
+    {
+        //TODO error
+        Piece piece;
+        return piece;
+    }
+
+    QList<Piece> candidates;
+    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+    {
+        Piece actualBoardPiece = iterator->second;
+
+        if (actualBoardPiece.getColor() == color && actualBoardPiece.getPgnIdentifier() == pngIdentifier)
+        {
+            candidates.append(actualBoardPiece);
+        }
+
+    }
+
+    QListIterator iterator(candidates);
+    while (iterator.hasNext())
+    {
+        Piece candidate = iterator.next();
+        if (candidate.matchPosition(nextPosition, prerequisite, pieces))
+        {
+            return candidate;
+        }
+    }
+    Piece piece;
+    return piece;
+
+}
+
+bool Piece::matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
+{
+    if (prerequisite.row != 0 && prerequisite.row != position.row)
+    {
+        return false;
+    }
+
+    if (prerequisite.column != 0 && prerequisite.column != position.column)
+    {
+        return false;
+    }
+
+    return canGoTo(nextPosition, pieces);
 }
 
 bool Piece::canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces)

@@ -15,20 +15,24 @@ public:
     Piece();
     Piece(QString name, QString color, Position position);
 
-    static Piece findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
+    Position position;
 
     QString getName();
     QString getColor();
-    QString getPngIdentifier();
+    QString getPgnIdentifier();
     QString toString();
-    Position position;
+
+    bool matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
+
+    static Piece findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
 
 private:
+
     virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece> &pieces);
 
     QString name;
     QString color;
-    QString pngIdentifier;
+    QString pgnIdentifier;
     QIcon icon;
 };
 
