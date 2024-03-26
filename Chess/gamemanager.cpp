@@ -105,6 +105,8 @@ void GameManager::parsePgn(QString fileLine)
     {
         QString pgnInstruction = iterator.next();
 
+        qDebug() << pgnInstruction;
+
         if (!isEndingIndication(pgnInstruction) && !isMoveNumber(pgnInstruction))
         {
             instanciateNewMove(pgnInstruction, color);

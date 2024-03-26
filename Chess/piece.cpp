@@ -7,6 +7,10 @@
 
 Piece::Piece() {}
 
+Piece::Piece(const Piece &piece)
+    : Piece(piece.color, piece.pgnIdentifier, piece.position)
+{}
+
 Piece::Piece(QString color, QString pgnIdentifier, Position position)
     : color(color), pgnIdentifier(pgnIdentifier), position(position), icon()
 {
@@ -14,6 +18,8 @@ Piece::Piece(QString color, QString pgnIdentifier, Position position)
     QString iconFileName("img/pawn_icon.png");
     icon = QIcon(iconFileName);
 }
+
+Piece::~Piece() {}
 
 QString Piece::getColor()
 {
@@ -30,7 +36,7 @@ QString Piece::toString()
     return QString("%1, %2").arg(pgnIdentifier).arg(position.toString());
 }
 
-Piece* Piece::findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
+Piece* Piece::findPiece(QString pngIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
 {
     if (pieces.isEmpty())
     {
@@ -54,9 +60,6 @@ Piece* Piece::findPiece(QString pngIdentifier, QString color, Position nextPosit
     while (iterator.hasNext())
     {
         Piece* candidate = iterator.next();
-        qDebug() << nextPosition.toString() << prerequisite.toString();
-        qDebug() << candidate->toString();
-        qDebug() << candidate->matchPosition(nextPosition, prerequisite, pieces);
         if (candidate->matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;
@@ -67,7 +70,7 @@ Piece* Piece::findPiece(QString pngIdentifier, QString color, Position nextPosit
 
 }
 
-bool Piece::matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces)
+bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces)
 {
     if (prerequisite.row != 0 && prerequisite.row != position.row)
     {
@@ -79,5 +82,19 @@ bool Piece::matchPosition(Position nextPosition, Position prerequisite, const QM
         return false;
     }
 
+    return isTravelAllowed(nextPosition, pieces);
+}
+
+bool Piece::isTravelAllowed(const Position &nextPosition, const QMap<Position, Piece*> &pieces)
+{
+    if (nextPosition == position)
+    {
+        return false;
+    }
+
+    if (!nextPosition.isEmpty(color, pieces))
+    {
+        return false;
+    }
     return canGoTo(nextPosition, pieces);
 }

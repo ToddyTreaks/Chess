@@ -13,7 +13,9 @@ class Piece
 {
 public:
     Piece();
+    Piece(const Piece &piece);
     Piece(QString color, QString pgnIdentifier, Position position);
+    ~Piece();
 
     Position position;
 
@@ -21,13 +23,14 @@ public:
     QString getPgnIdentifier();
     QString toString();
 
-    bool matchPosition(Position nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
+    bool matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
 
-    static Piece* findPiece(QString pngIdentifier, QString color, Position nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
+    static Piece* findPiece(QString pngIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
 
-private:
+protected:
 
-    virtual bool canGoTo(Position targetPosition, const QMap<Position, Piece*> &pieces) = 0;
+    bool isTravelAllowed(const Position &targetPosition, const QMap<Position, Piece*> &pieces);
+    virtual bool canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces) = 0;
 
     QString color;
     QString pgnIdentifier;

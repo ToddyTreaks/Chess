@@ -3,6 +3,8 @@
 
 #include <QString>
 
+class Piece;
+
 class Position
 {
 public:
@@ -12,9 +14,12 @@ public:
     int row;
     int column;
 
-    QString toString();
+    QString toString() const;
+    bool isEmpty(const QMap<Position, Piece*> &pieces) const;
+    bool isEmpty(QString color, const QMap<Position, Piece*> &pieces) const;
 
     bool operator<(const Position& other) const;
+    bool operator==(const Position& other) const;
 
 };
 

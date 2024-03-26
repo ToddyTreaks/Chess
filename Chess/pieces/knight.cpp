@@ -6,7 +6,7 @@ Knight::Knight(QString color, Position position)
     : Piece(color, "N", position)
 {}
 
-bool Knight::canGoTo(Position targetPosition, const QMap<Position, Piece*> &pieces) {
+bool Knight::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces) {
 
     int x_target = std::abs(targetPosition.column - position.column);
     int y_target = std::abs(targetPosition.row - position.row);
