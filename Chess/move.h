@@ -15,6 +15,10 @@ public:
 
     QString toString();
 
+    Piece* getPiece();
+    Position getPreviousPosition();
+    Position getNextPosition();
+
 private:
     Piece* piece;
     Position previousPosition;

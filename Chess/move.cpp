@@ -32,3 +32,18 @@ QString Move::toString()
     moveToString = moveToString.arg(nextPosition.toString());
     return moveToString;
 }
+
+Piece* Move::getPiece()
+{
+    return piece;
+}
+
+Position Move::getPreviousPosition()
+{
+    return previousPosition;
+}
+
+Position Move::getNextPosition()
+{
+    return nextPosition;
+}

@@ -17,16 +17,19 @@ public:
     GameManager(QString fileName);
     GameManager(QFile file);
 
+    void nextMove();
+    void previousMove();
+
     void toPgn(QFile file);
 
 private:
     Board board;
-    QList<Move> moves;
+    QList<Move> nextMoves;
+    QList<Move> movesDone;
     QMap<Position, Piece*> pieces;
     QList<Piece> takenPieces;
 
     void createStartingPieces();
-
     void parsePgn(QString fileLine);
     bool isEndingIndication(QString pgnInstruction);
     bool isMoveNumber(QString pgnInstruction);

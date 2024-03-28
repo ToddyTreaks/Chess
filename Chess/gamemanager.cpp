@@ -32,8 +32,8 @@ GameManager::GameManager(QFile file)
         parsePgn(fileLine);
     }
 
-    qDebug() << "Moves :";
-    QListIterator iterator(moves);
+    qDebug() << "movesDone :";
+    QListIterator iterator(movesDone);
     while (iterator.hasNext())
     {
         Move move = iterator.next();
@@ -171,13 +171,15 @@ void GameManager::instanciateNewMove(QString pgnInstruction, QString color)
     if (isValidPieceInput(firstLetter))
     {
         Move newMove(Piece::findPiece((QString) firstLetter, color, nextPosition, prerequisite, pieces), nextPosition);
-        moves.append(newMove);
+        nextMoves.append(newMove);
     }
     else
     {
         Move newMove(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
-        moves.append(newMove);
+        nextMoves.append(newMove);
     }
+
+    nextMove();
 
     return;
 
@@ -274,4 +276,36 @@ int GameManager::columnNumber(QChar columnInput)
     return columnInput.unicode() - QChar('a').unicode() + 1;
 }
 
+void GameManager::nextMove()
+{
+    if (nextMoves.isEmpty())
+    {
+        //TODO error
+        return;
+    }
 
+    Move nextMove = nextMoves.takeFirst();
+    Piece* piece = nextMove.getPiece();
+    Position previousPosition = piece->position;
+
+    if (previousPosition != nextMove.getPreviousPosition())
+    {
+        //TODO error
+        return;
+    }
+
+    if (!pieces.contains(previousPosition))
+    {
+        //TODO error
+        return;
+    }
+
+    piece->position = nextMove.getNextPosition();
+    //TODO capture
+    pieces.remove(previousPosition);
+    pieces.insert(nextMove.getNextPosition(), piece);
+
+    movesDone.append(nextMove);
+
+    return;
+}

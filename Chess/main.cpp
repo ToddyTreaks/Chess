@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    GameManager game("D:/documents/chess/Chess/Chess/pgnTests/test2.pgn");
+    GameManager game("D:/documents/chess/Chess/Chess/pgnTests/test1.pgn");
 
     QApplication a(argc, argv);
     MainWindow w;
