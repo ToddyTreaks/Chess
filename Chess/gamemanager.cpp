@@ -309,3 +309,37 @@ void GameManager::nextMove()
 
     return;
 }
+
+void GameManager::previousMove()
+{
+    if (movesDone.isEmpty())
+    {
+        //TODO error
+        return;
+    }
+
+    Move previousMove = movesDone.takeFirst();
+    Piece* piece = previousMove.getPiece();
+    Position currentPosition = piece->position;
+
+    if (currentPosition != previousMove.getNextPosition())
+    {
+        //TODO error
+        return;
+    }
+
+    if (!pieces.contains(currentPosition))
+    {
+        //TODO error
+        return;
+    }
+
+    piece->position = previousMove.getPreviousPosition();
+    //TODO capture
+    pieces.remove(currentPosition);
+    pieces.insert(previousMove.getPreviousPosition(), piece);
+
+    nextMoves.append(previousMove);
+
+    return;
+}
