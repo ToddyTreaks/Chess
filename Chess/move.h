@@ -34,7 +34,6 @@ private:
     Piece* capturedPiece;
     bool castlingKingside;
     bool castlingQueenside;
-    Piece* castlingKing;
 };
 
 #endif // MOVE_H

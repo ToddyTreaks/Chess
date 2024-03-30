@@ -70,12 +70,12 @@ void Move::setCapturedPiece(Piece* capturedPiece)
 
 void Move::setKingsideCastlingKing(Piece* castlingKing)
 {
-    castlingKing = castlingKing;
+    piece = castlingKing;
     castlingKingside = true;
 }
 
 void Move::setQueensideCastlingKing(Piece* castlingKing)
 {
-    castlingKing = castlingKing;
+    piece = castlingKing;
     castlingQueenside = true;
 }
