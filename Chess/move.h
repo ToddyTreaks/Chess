@@ -18,11 +18,23 @@ public:
     Piece* getPiece();
     Position getPreviousPosition();
     Position getNextPosition();
+    bool isCapture();
+    bool isCastlingKingside();
+    bool isCastlingQueenside();
+
+    void setCapturedPiece(Piece* capturedPiece);
+    void setKingsideCastlingKing(Piece* castlingKing);
+    void setQueensideCastlingKing(Piece* castlingKing);
 
 private:
     Piece* piece;
     Position previousPosition;
     Position nextPosition;
+    bool capture;
+    Piece* capturedPiece;
+    bool castlingKingside;
+    bool castlingQueenside;
+    Piece* castlingKing;
 };
 
 #endif // MOVE_H

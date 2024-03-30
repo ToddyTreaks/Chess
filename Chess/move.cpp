@@ -3,17 +3,16 @@
 Move::Move() {}
 
 Move::Move(Piece* piece, Position nextPosition)
-    : piece(piece), previousPosition(), nextPosition(nextPosition)
-{
-    if (piece != NULL)
-    {
-        previousPosition = piece->position;
-    }
-}
+    : Move(piece, piece->position, nextPosition)
+{}
 
 Move::Move(Piece* piece, Position previousPosition, Position nextPosition)
     : piece(piece), previousPosition(previousPosition), nextPosition(nextPosition)
-{}
+{
+    capture = false;
+    castlingKingside = false;
+    castlingQueenside = false;
+}
 
 QString Move::toString()
 {
@@ -46,4 +45,37 @@ Position Move::getPreviousPosition()
 Position Move::getNextPosition()
 {
     return nextPosition;
+}
+
+bool Move::isCapture()
+{
+    return capture;
+}
+
+bool Move::isCastlingKingside()
+{
+    return castlingKingside;
+}
+
+bool Move::isCastlingQueenside()
+{
+    return castlingQueenside;
+}
+
+void Move::setCapturedPiece(Piece* capturedPiece)
+{
+    capturedPiece = capturedPiece;
+    capture = true;
+}
+
+void Move::setKingsideCastlingKing(Piece* castlingKing)
+{
+    castlingKing = castlingKing;
+    castlingKingside = true;
+}
+
+void Move::setQueensideCastlingKing(Piece* castlingKing)
+{
+    castlingKing = castlingKing;
+    castlingQueenside = true;
 }

@@ -12,6 +12,9 @@ bool King::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> 
     int y_target = std::abs(targetPosition.row - position.row);
 
     if ((x_target == 1 && y_target == 1) || (x_target + y_target ==1))
+    {
         return true;
+    }
 
-    return false;}
+    return false;
+}

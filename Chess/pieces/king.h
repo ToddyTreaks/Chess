@@ -10,6 +10,7 @@ public:
     King(QString color, Position position);
 
     bool canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces);
+
 };
 
 #endif // KING_H
