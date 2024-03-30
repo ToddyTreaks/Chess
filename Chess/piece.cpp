@@ -38,10 +38,10 @@ QString Piece::toString()
 
 Piece* Piece::findPiece(QString pngIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
 {
+    qDebug() << "enterring findPiece, color is " << color;
     if (pieces.isEmpty())
     {
-        //TODO error
-        return NULL;
+        throw std::out_of_range("Piece not found");
     }
 
     QList<Piece*> candidates;
@@ -60,13 +60,14 @@ Piece* Piece::findPiece(QString pngIdentifier, QString color, const Position &ne
     while (iterator.hasNext())
     {
         Piece* candidate = iterator.next();
+        qDebug() << candidate->toString();
         if (candidate->matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;
         }
     }
-    //TODO error
-    return NULL;
+
+    throw std::out_of_range("Piece not found");
 
 }
 

@@ -26,11 +26,8 @@ GameManager::GameManager(QFile file)
     createStartingPieces();
 
     QTextStream stream(&file);
-    QString fileLine;
-    while (stream.readLineInto(&fileLine))
-    {
-        parsePgn(fileLine);
-    }
+    QString fileContent = stream.read(MAX_PGN_CHARACTERS);
+    parsePgn(fileContent);
 
     qDebug() << "movesDone :";
     QListIterator iterator(movesDone);
@@ -91,12 +88,11 @@ void GameManager::createStartingPieces()
     return;
 }
 
-void GameManager::parsePgn(QString fileLine)
+void GameManager::parsePgn(QString fileContent)
 {
-    qDebug() << fileLine;
-
+    fileContent.replace('\n', ' ');
     QStringList pgnInstructions;
-    pgnInstructions = fileLine.split(" ");
+    pgnInstructions = fileContent.split(' ');
 
     QString color = "White";
 
@@ -109,7 +105,7 @@ void GameManager::parsePgn(QString fileLine)
 
         if (!isEndingIndication(pgnInstruction) && !isMoveNumber(pgnInstruction))
         {
-            instanciateNewMove(pgnInstruction, color);
+            instanciateMoves(pgnInstruction, color);
 
             if (color == "White")
             {
@@ -137,7 +133,7 @@ bool GameManager::isMoveNumber(QString pgnInstruction)
     return (pgnInstruction.last(1) == ".");
 }
 
-void GameManager::instanciateNewMove(QString pgnInstruction, QString color)
+void GameManager::instanciateMoves(QString pgnInstruction, QString color)
 {
     if (pgnInstruction.size() < 1)
     {

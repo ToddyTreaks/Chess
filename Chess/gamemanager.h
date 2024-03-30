@@ -29,11 +29,13 @@ private:
     QMap<Position, Piece*> pieces;
     QList<Piece> takenPieces;
 
+    const unsigned int MAX_PGN_CHARACTERS = 32768;
+
     void createStartingPieces();
-    void parsePgn(QString fileLine);
+    void parsePgn(QString fileContent);
     bool isEndingIndication(QString pgnInstruction);
     bool isMoveNumber(QString pgnInstruction);
-    void instanciateNewMove(QString pgnInstruction, QString color);
+    void instanciateMoves(QString pgnInstruction, QString color);
     Position getPrerequisite(QString pgnInstruction);
     Position getNextPosition(QString pgnInstruction);
     bool isValidPieceInput(QChar pgnChar);

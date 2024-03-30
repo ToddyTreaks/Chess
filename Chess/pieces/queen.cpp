@@ -3,8 +3,6 @@
 #include "bishop.h"
 #include "rook.h"
 
-#include <QDebug>
-
 Queen::Queen() {}
 
 Queen::Queen(QString color, Position position)

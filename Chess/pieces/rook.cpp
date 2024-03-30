@@ -1,7 +1,5 @@
 #include "rook.h"
 
-#include <QDebug>
-
 Rook::Rook() {}
 
 Rook::Rook(const Piece &piece)
@@ -14,9 +12,6 @@ Rook::Rook(QString color, Position position)
 
 bool Rook::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces)
 {
-    qDebug() << targetPosition.toString();
-    qDebug() << (this == NULL);
-
     int x_target = std::abs(targetPosition.column - position.column);
     int y_target = std::abs(targetPosition.row - position.row);
 
@@ -30,7 +25,7 @@ bool Rook::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> 
         return false;
     }
 
-    if (y_target == 0)
+    if (x_target == 0)
     {
         return noBlockingPieceOnColumn(targetPosition, pieces);
     }
@@ -52,7 +47,6 @@ bool Rook::noBlockingPieceOnColumn(const Position &targetPosition, const QMap<Po
     }
     return true;
 }
-
 
 bool Rook::noBlockingPieceOnRow(const Position &targetPosition, const QMap<Position, Piece*> &pieces)
 {
