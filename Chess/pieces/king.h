@@ -9,8 +9,12 @@ public:
     King();
     King(QString color, Position position);
 
-    bool canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces);
+    void castleKingside(QMap<Position, Piece*> &pieces);
+    void castleQueenside(QMap<Position, Piece*> &pieces);
 
+    bool canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces);
+    bool canCastleKingside(const QMap<Position, Piece*> &pieces);
+    bool canCastleQueenside(const QMap<Position, Piece*> &pieces);
 };
 
 #endif // KING_H

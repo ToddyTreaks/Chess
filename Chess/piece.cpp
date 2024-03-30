@@ -36,7 +36,22 @@ QString Piece::toString()
     return QString("%1, %2").arg(pgnIdentifier).arg(position.toString());
 }
 
-Piece* Piece::findPiece(QString pngIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
+Piece* Piece::findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece *> &pieces)
+{
+    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+    {
+        Piece* candidate = iterator->second;
+
+        if (candidate->getColor() == color && candidate->getPgnIdentifier() == pgnIdentifier)
+        {
+           return candidate;
+        }
+    }
+
+    throw std::out_of_range("Piece not found");
+}
+
+Piece* Piece::findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
 {
     qDebug() << "enterring findPiece, color is " << color;
     if (pieces.isEmpty())
@@ -49,7 +64,7 @@ Piece* Piece::findPiece(QString pngIdentifier, QString color, const Position &ne
     {
         Piece* actualBoardPiece = iterator->second;
 
-        if (actualBoardPiece->getColor() == color && actualBoardPiece->getPgnIdentifier() == pngIdentifier)
+        if (actualBoardPiece->getColor() == color && actualBoardPiece->getPgnIdentifier() == pgnIdentifier)
         {
             candidates.append(actualBoardPiece);
         }

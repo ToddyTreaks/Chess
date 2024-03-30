@@ -123,6 +123,11 @@ void GameManager::parsePgn(QString fileContent)
 
 bool GameManager::isEndingIndication(QString pgnInstruction)
 {
+    if (pgnInstruction.size() < 2)
+    {
+        return false;
+    }
+
     QStringList possibleFisrtTwoLetters = {"1/", "1-", "0-"};
     QString instructionFirstTwoLetters = pgnInstruction.first(2);
     return possibleFisrtTwoLetters.contains(instructionFirstTwoLetters);
@@ -130,6 +135,10 @@ bool GameManager::isEndingIndication(QString pgnInstruction)
 
 bool GameManager::isMoveNumber(QString pgnInstruction)
 {
+    if (pgnInstruction.isEmpty())
+    {
+        return false;
+    }
     return (pgnInstruction.last(1) == ".");
 }
 
@@ -143,37 +152,33 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
     QChar firstLetter;
     firstLetter = pgnInstruction.at(0);
 
-    if (firstLetter == 'O')
-    {
-        if (pgnInstruction == "O-O-O")
-        {
-            // TODO
-            return;
-        }
-
-        if(pgnInstruction == "O-O")
-        {
-            // TODO
-            return;
-        }
-
-        //TODO
-        return;
-    }
+    Move newMove;
 
     Position prerequisite = getPrerequisite(pgnInstruction);
     Position nextPosition = getNextPosition(pgnInstruction);
 
-    if (isValidPieceInput(firstLetter))
+    if (firstLetter == 'O')
     {
-        Move newMove(Piece::findPiece((QString) firstLetter, color, nextPosition, prerequisite, pieces), nextPosition);
-        nextMoves.append(newMove);
+        Piece* castlingKing = Piece::findPiece("K", color, pieces);
+        if (pgnInstruction == "O-O-O")
+        {
+            newMove.setQueensideCastlingKing(castlingKing);
+        }
+
+        if(pgnInstruction == "O-O")
+        {
+            newMove.setKingsideCastlingKing(castlingKing);
+        }
+    }
+    else if (isValidPieceInput(firstLetter))
+    {
+        newMove = Move(Piece::findPiece((QString) firstLetter, color, nextPosition, prerequisite, pieces), nextPosition);
     }
     else
     {
-        Move newMove(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
-        nextMoves.append(newMove);
-    }
+        newMove = Move(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
+    }    
+    nextMoves.append(newMove);
 
     nextMove();
 
@@ -282,6 +287,14 @@ void GameManager::nextMove()
 
     Move nextMove = nextMoves.takeFirst();
     Piece* piece = nextMove.getPiece();
+
+    if (nextMove.isCastlingKingside())
+    {
+        ((King *) piece)->castleKingside(pieces);
+        movesDone.append(nextMove);
+        return;
+    }
+
     Position previousPosition = piece->position;
 
     if (previousPosition != nextMove.getPreviousPosition())

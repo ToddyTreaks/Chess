@@ -25,7 +25,8 @@ public:
 
     bool matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
 
-    static Piece* findPiece(QString pngIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
+    static Piece* findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece*> &pieces);
+    static Piece* findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
 
 protected:
 
