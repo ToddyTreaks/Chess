@@ -279,6 +279,13 @@ void GameManager::nextMove()
         return;
     }
 
+    if (nextMove.isCastlingQueenside())
+    {
+        nextMove.castleQueenside(pieces);
+        movesDone.prepend(nextMove);
+        return;
+    }
+
     Position previousPosition = piece.position;
 
     if (!pieces.contains(previousPosition))

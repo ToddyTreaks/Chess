@@ -109,6 +109,36 @@ void Move::castleKingside(QMap<Position, Piece> &pieces)
 
 }
 
+void Move::castleQueenside(QMap<Position, Piece> &pieces)
+{
+    if (!canCastleQueenside(pieces))
+    {
+        // TODO error
+        return;
+    }
+
+    Piece rook;
+    Position rookPosition(1, 1);
+
+    if (piece.getColor() == "Black")
+    {
+        rookPosition.row = 8;
+    }
+    rook = pieces.value(rookPosition);
+
+    Position kingNextPosition(piece.position.row, piece.position.column - 2);
+    Position rookNextPosition(rookPosition.row, rookPosition.column + 3);
+
+    pieces.remove(piece.position);
+    pieces.remove(rookPosition);
+
+    piece.position = kingNextPosition;
+    rook.position = rookNextPosition;
+    pieces.insert(kingNextPosition, piece);
+    pieces.insert(rookNextPosition, rook);
+
+}
+
 void Move::undoCastleKingside(QMap<Position, Piece> &pieces)
 {
     Piece rook;
@@ -122,6 +152,30 @@ void Move::undoCastleKingside(QMap<Position, Piece> &pieces)
 
     Position kingPreviousPosition(piece.position.row, piece.position.column - 2);
     Position rookPreviousPosition(rookPosition.row, rookPosition.column + 2);
+
+    pieces.remove(piece.position);
+    pieces.remove(rookPosition);
+
+    piece.position = kingPreviousPosition;
+    rook.position = rookPreviousPosition;
+    pieces.insert(kingPreviousPosition, piece);
+    pieces.insert(rookPreviousPosition, rook);
+
+}
+
+void Move::undoCastleQueenside(QMap<Position, Piece> &pieces)
+{
+    Piece rook;
+    Position rookPosition(1, 4);
+
+    if (piece.getColor() == "Black")
+    {
+        rookPosition.row = 8;
+    }
+    rook = pieces.value(rookPosition);
+
+    Position kingPreviousPosition(piece.position.row, piece.position.column + 2);
+    Position rookPreviousPosition(rookPosition.row, rookPosition.column - 3);
 
     pieces.remove(piece.position);
     pieces.remove(rookPosition);
