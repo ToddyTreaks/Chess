@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "boarddrawer.h"
+#include "gamemanager.h"
 
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -24,7 +25,7 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
 
-
+    GameManager *gameManager;
     BoardDrawer boardDrawer;
 };
 #endif // MAINWINDOW_H

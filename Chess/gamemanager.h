@@ -16,6 +16,8 @@ public:
     GameManager(QString fileName);
     GameManager(QFile file);
 
+    const QMap<Position, Piece*> getPieces();
+
     void nextMove();
     void previousMove();
 

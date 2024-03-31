@@ -277,6 +277,11 @@ int GameManager::columnNumber(QChar columnInput)
     return columnInput.unicode() - QChar('a').unicode() + 1;
 }
 
+const QMap<Position, Piece*> GameManager::getPieces()
+{
+    return pieces;
+}
+
 void GameManager::nextMove()
 {
     if (nextMoves.isEmpty())
