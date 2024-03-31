@@ -12,16 +12,36 @@ MainWindow::MainWindow(QWidget *parent)
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-    QString fileName;
-    fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
-    GameManager manager(fileName);
+    GameManager manager;
     gameManager = &manager;
 
     boardDrawer.initializeBoard(scene);
-    boardDrawer.drawPieces(scene, gameManager->getPieces());
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_nextMove_clicked()
+{
+    return;
+}
+
+
+void MainWindow::on_previousMove_clicked()
+{
+    return;
+}
+
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString fileName;
+    fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
+    GameManager manager(fileName);
+    gameManager = &manager;
+
+    boardDrawer.drawPieces(scene, gameManager->getPieces());
+}
+

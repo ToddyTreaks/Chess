@@ -29,12 +29,10 @@ GameManager::GameManager(QFile file)
     QString fileContent = stream.read(MAX_PGN_CHARACTERS);
     parsePgn(fileContent);
 
-    qDebug() << "movesDone :";
-    QListIterator iterator(movesDone);
-    while (iterator.hasNext())
+    while (hasPreviousMove())
     {
-        Move move = iterator.next();
-        qDebug() << move.toString();
+        qDebug() << "previousmove()";
+        previousMove();
     }
 }
 
@@ -101,7 +99,7 @@ void GameManager::parsePgn(QString fileContent)
     {
         QString pgnInstruction = iterator.next();
 
-        qDebug() << pgnInstruction;
+        qDebug() << "------------new instruction -----------------" << pgnInstruction;
 
         if (!isEndingIndication(pgnInstruction) && !isMoveNumber(pgnInstruction))
         {
@@ -144,6 +142,8 @@ bool GameManager::isMoveNumber(QString pgnInstruction)
 
 void GameManager::instanciateMoves(QString pgnInstruction, QString color)
 {
+    Move newMove;
+
     if (pgnInstruction.size() < 1)
     {
         // TODO error
@@ -151,8 +151,6 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
     }
     QChar firstLetter;
     firstLetter = pgnInstruction.at(0);
-
-    Move newMove;
 
     Position prerequisite = getPrerequisite(pgnInstruction);
     Position nextPosition = getNextPosition(pgnInstruction);
@@ -177,7 +175,13 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
     else
     {
         newMove = Move(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
-    }    
+    }
+
+    if (isCapture(pgnInstruction))
+    {
+        newMove.setCapturedPiece(pieces.value(nextPosition));
+    }
+
     nextMoves.append(newMove);
 
     nextMove();
@@ -277,6 +281,11 @@ int GameManager::columnNumber(QChar columnInput)
     return columnInput.unicode() - QChar('a').unicode() + 1;
 }
 
+bool GameManager::isCapture(QString pgnInstruction)
+{
+    return pgnInstruction.contains('x');
+}
+
 const QMap<Position, Piece*> GameManager::getPieces()
 {
     return pieces;
@@ -284,6 +293,12 @@ const QMap<Position, Piece*> GameManager::getPieces()
 
 void GameManager::nextMove()
 {
+    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+    {
+        Piece* piece = iterator->second;
+        qDebug() << piece->toString();
+    }
+
     if (nextMoves.isEmpty())
     {
         //TODO error
@@ -314,12 +329,17 @@ void GameManager::nextMove()
         return;
     }
 
+    if (nextMove.isCapture())
+    {
+        takenPieces.append(pieces.value(nextMove.getNextPosition()));
+    }
+
     piece->position = nextMove.getNextPosition();
     //TODO capture
     pieces.remove(previousPosition);
     pieces.insert(nextMove.getNextPosition(), piece);
 
-    movesDone.append(nextMove);
+    movesDone.prepend(nextMove);
 
     return;
 }
@@ -334,16 +354,25 @@ void GameManager::previousMove()
 
     Move previousMove = movesDone.takeFirst();
     Piece* piece = previousMove.getPiece();
-    Position currentPosition = piece->position;
 
+    if (previousMove.isCastlingKingside())
+    {
+        ((King *) piece)->undoCastleKingside(pieces);
+        nextMoves.append(previousMove);
+        return;
+    }
+
+    Position currentPosition = piece->position;
     if (currentPosition != previousMove.getNextPosition())
     {
+        qDebug() << "error1";
         //TODO error
         return;
     }
 
     if (!pieces.contains(currentPosition))
     {
+        qDebug() << "error2";
         //TODO error
         return;
     }
@@ -353,7 +382,25 @@ void GameManager::previousMove()
     pieces.remove(currentPosition);
     pieces.insert(previousMove.getPreviousPosition(), piece);
 
-    nextMoves.append(previousMove);
+    if (previousMove.isCapture())
+    {
+        qDebug() << "capture";
+        qDebug() << (previousMove.getCapturedPiece()->position.toString());
+        previousMove.getCapturedPiece()->position = currentPosition;
+        pieces.insert(currentPosition, previousMove.getCapturedPiece());
+    }
+
+    nextMoves.prepend(previousMove);
 
     return;
+}
+
+bool GameManager::hasNextMove()
+{
+    return !nextMoves.isEmpty();
+}
+
+bool GameManager::hasPreviousMove()
+{
+    return !movesDone.isEmpty();
 }

@@ -18,6 +18,7 @@ public:
     Piece* getPiece();
     Position getPreviousPosition();
     Position getNextPosition();
+    Piece* getCapturedPiece();
     bool isCapture();
     bool isCastlingKingside();
     bool isCastlingQueenside();

@@ -21,11 +21,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_nextMove_clicked();
+
+    void on_previousMove_clicked();
+
+    void on_actionOpen_triggered();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
 
     GameManager *gameManager;
     BoardDrawer boardDrawer;
+
 };
 #endif // MAINWINDOW_H

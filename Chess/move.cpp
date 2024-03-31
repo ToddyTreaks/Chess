@@ -47,6 +47,11 @@ Position Move::getNextPosition()
     return nextPosition;
 }
 
+Piece* Move::getCapturedPiece()
+{
+    return capturedPiece;
+}
+
 bool Move::isCapture()
 {
     return capture;

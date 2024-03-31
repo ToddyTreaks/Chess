@@ -37,8 +37,9 @@ void BoardDrawer::drawPieces(QGraphicsScene* scene, const QMap<Position, Piece *
 void BoardDrawer::drawPiece(Piece* piece, QGraphicsScene* scene)
 {
     QPixmap icon(piece->getIconFileName());
-    icon = icon.scaled(SQUARE_SIZE, SQUARE_SIZE, Qt::KeepAspectRatio);
+    icon = icon.scaled(SQUARE_SIZE, SQUARE_SIZE, Qt::KeepAspectRatio);    
     QGraphicsPixmapItem* iconItem = scene->addPixmap(icon);
+
     int x = getxFromPosition(piece->position);
     int y = getyFromPosition(piece->position);
     iconItem->setPos(x*SQUARE_SIZE, y*SQUARE_SIZE);

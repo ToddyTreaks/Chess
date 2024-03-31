@@ -30,8 +30,33 @@ void King::castleKingside(QMap<Position, Piece*> &pieces)
     pieces.remove(rookPosition);
 
     this->position = kingNextPosition;
+    rook->position = rookNextPosition;
     pieces.insert(kingNextPosition, this);
     pieces.insert(rookNextPosition, rook);
+
+}
+
+void King::undoCastleKingside(QMap<Position, Piece*> &pieces)
+{
+    Piece* rook;
+    Position rookPosition(1, 6);
+
+    if (color == "Black")
+    {
+        rookPosition.row = 8;
+    }
+    rook = pieces.value(rookPosition);
+
+    Position kingPreviousPosition(this->position.row, this->position.column - 2);
+    Position rookPreviousPosition(rookPosition.row, rookPosition.column + 2);
+
+    pieces.remove(this->position);
+    pieces.remove(rookPosition);
+
+    this->position = kingPreviousPosition;
+    rook->position = rookPreviousPosition;
+    pieces.insert(kingPreviousPosition, this);
+    pieces.insert(rookPreviousPosition, rook);
 
 }
 

@@ -21,13 +21,16 @@ public:
     void nextMove();
     void previousMove();
 
+    bool hasNextMove();
+    bool hasPreviousMove();
+
     void toPgn(QFile file);
 
 private:
     QList<Move> nextMoves;
     QList<Move> movesDone;
     QMap<Position, Piece*> pieces;
-    QList<Piece> takenPieces;
+    QList<Piece*> takenPieces;
 
     const unsigned int MAX_PGN_CHARACTERS = 32768;
 
@@ -43,6 +46,7 @@ private:
     bool isValidColumnInput(QChar pgnChar);
     int rowNumber(QChar rowInput);
     int columnNumber(QChar columnInput);
+    bool isCapture(QString pgnInstruction);
 };
 
 #endif // GAMEMANAGER_H

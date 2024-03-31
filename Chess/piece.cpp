@@ -17,7 +17,10 @@ Piece::Piece(QString color, QString pgnIdentifier, Position position)
     iconFileName = iconFileName.arg(pgnIdentifier);
 }
 
-Piece::~Piece() {}
+Piece::~Piece()
+{
+    qDebug() << "piece détruite";
+}
 
 QString Piece::getColor()
 {
@@ -56,7 +59,6 @@ Piece* Piece::findPiece(QString pgnIdentifier, QString color, const QMap<Positio
 
 Piece* Piece::findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
 {
-    qDebug() << "enterring findPiece, color is " << color;
     if (pieces.isEmpty())
     {
         throw std::out_of_range("Piece not found");
@@ -78,7 +80,6 @@ Piece* Piece::findPiece(QString pgnIdentifier, QString color, const Position &ne
     while (iterator.hasNext())
     {
         Piece* candidate = iterator.next();
-        qDebug() << candidate->toString();
         if (candidate->matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;
