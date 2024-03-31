@@ -1,16 +1,16 @@
-#include "bishop.h"
+#include "bishopmovementstrategy.h"
 
-Bishop::Bishop() {}
+BishopMovementStrategy::BishopMovementStrategy() {}
 
-Bishop::Bishop(const Piece &piece)
-    : Piece(piece)
-{}
+// BishopMovementStrategy::BishopMovementStrategy(const Piece &piece)
+//     : Piece(piece)
+// {}
 
-Bishop::Bishop(QString color, Position position)
-    : Piece(color, "B", position)
-{}
+// BishopMovementStrategy::BishopMovementStrategy(QString color, Position position)
+//     : Piece(color, "B", position)
+// {}
 
-bool Bishop::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces)
+bool BishopMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
 {
     int x_target = std::abs(targetPosition.column - position.column);
     int y_target = std::abs(targetPosition.row - position.row);
@@ -28,7 +28,7 @@ bool Bishop::canGoTo(const Position &targetPosition, const QMap<Position, Piece*
     return true;
 }
 
-bool Bishop::noBlockingPieceOnPath(const Position &targetPosition, const QMap<Position, Piece*> &pieces)
+bool BishopMovementStrategy::noBlockingPieceOnPath(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
 {
     int moveSquareNumber = std::abs(targetPosition.column - position.column);
     int rowIncrementSign = (targetPosition.row - position.row) / moveSquareNumber;

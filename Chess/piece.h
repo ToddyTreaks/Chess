@@ -7,6 +7,8 @@
 #include "position.h"
 #include <QMap>
 
+class MovementStrategy;
+
 class Piece
 {
 public:
@@ -23,19 +25,20 @@ public:
 
     QString toString();
 
-    bool matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
+    bool matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
 
-    static Piece* findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece*> &pieces);
-    static Piece* findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
+    static Piece findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece> &pieces);
+    static Piece findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
 
 protected:
 
-    bool isTravelAllowed(const Position &targetPosition, const QMap<Position, Piece*> &pieces);
-    virtual bool canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces) = 0;
+    bool canGoTo(const Position &targetPosition, const QMap<Position, Piece> &pieces);
 
     QString color;
     QString pgnIdentifier;
     QString iconFileName;
+
+    MovementStrategy *movementStrategy;
 };
 
 #endif // PIECE_H

@@ -16,7 +16,7 @@ public:
     GameManager(QString fileName);
     GameManager(QFile file);
 
-    const QMap<Position, Piece*> getPieces();
+    const QMap<Position, Piece> getPieces();
 
     void nextMove();
     void previousMove();
@@ -29,8 +29,8 @@ public:
 private:
     QList<Move> nextMoves;
     QList<Move> movesDone;
-    QMap<Position, Piece*> pieces;
-    QList<Piece*> takenPieces;
+    QMap<Position, Piece> pieces;
+    QList<Piece> takenPieces;
 
     const unsigned int MAX_PGN_CHARACTERS = 32768;
 

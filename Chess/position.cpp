@@ -18,23 +18,18 @@ QString Position::toString() const
     return QString("%1%2").arg(columnLetter).arg(row);
 }
 
-bool Position::isEmpty(const QMap<Position, Piece*> &pieces) const
+bool Position::isEmpty(const QMap<Position, Piece> &pieces) const
 {
     return !pieces.contains(*this);
 }
 
-bool Position::isEmpty(QString color, const QMap<Position, Piece*> &pieces) const
+bool Position::isEmpty(QString color, const QMap<Position, Piece> &pieces) const
 {
     if (!pieces.contains(*this))
     {
         return true;
     }
-
-    if (pieces.value(*this) == NULL)
-    {
-        return true;
-    }
-    return !(pieces.value(*this)->getColor() == color);
+    return !(pieces.value(*this).getColor() == color);
 }
 
 bool Position::operator<(const Position& other) const

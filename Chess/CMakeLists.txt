@@ -27,18 +27,19 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         move.h move.cpp
         position.h position.cpp
         piece.h piece.cpp
-        pieces/king.h pieces/king.cpp
-        pieces/queen.h pieces/queen.cpp
-        pieces/pawn.h pieces/pawn.cpp
-        pieces/rook.h pieces/rook.cpp
-        pieces/bishop.h pieces/bishop.cpp
-        pieces/knight.h pieces/knight.cpp
+        movement/kingmovementstrategy.h movement/kingmovementstrategy.cpp
+        movement/queenmovementstrategy.h movement/queenmovementstrategy.cpp
+        movement/pawnmovementstrategy.h movement/pawnmovementstrategy.cpp
+        movement/rookmovementstrategy.h movement/rookmovementstrategy.cpp
+        movement/bishopmovementstrategy.h movement/bishopmovementstrategy.cpp
+        movement/knightmovementstrategy.h movement/knightmovementstrategy.cpp
         pgnTests/test1.pgn
         pgnTests/test2.pgn
         boarddrawer.h boarddrawer.cpp
         ressources.qrc
         boardsquare.h boardsquare.cpp
         pgnTests/test0.pgn
+        movement/movementstrategy.h movement/movementstrategy.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Chess APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -13,7 +13,7 @@ public:
     BoardDrawer();
 
     void initializeBoard(QGraphicsScene* scene);
-    void drawPieces(QGraphicsScene* scene, const QMap<Position, Piece *> &pieces);
+    void drawPieces(QGraphicsScene* scene, const QMap<Position, Piece> &pieces);
 
 private:
     QBrush lightBrush;
@@ -23,7 +23,7 @@ private:
 
     const int SQUARE_SIZE = 50;
 
-    void drawPiece(Piece* piece, QGraphicsScene* scene);
+    void drawPiece(Piece piece, QGraphicsScene* scene);
     int getxFromPosition(Position position);
     int getyFromPosition(Position position);
 };

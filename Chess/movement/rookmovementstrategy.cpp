@@ -1,16 +1,16 @@
-#include "rook.h"
+#include "rookmovementstrategy.h"
 
-Rook::Rook() {}
+RookMovementStrategy::RookMovementStrategy() {}
 
-Rook::Rook(const Piece &piece)
-    : Piece(piece)
-{}
+// RookMovementStrategy::RookMovementStrategy(const Piece &piece)
+//     : Piece(piece)
+// {}
 
-Rook::Rook(QString color, Position position)
-    : Piece(color, "R", position)
-{}
+// RookMovementStrategy::RookMovementStrategy(QString color, Position position)
+//     : Piece(color, "R", position)
+// {}
 
-bool Rook::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> &pieces)
+bool RookMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
 {
     int x_target = std::abs(targetPosition.column - position.column);
     int y_target = std::abs(targetPosition.row - position.row);
@@ -27,15 +27,15 @@ bool Rook::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> 
 
     if (x_target == 0)
     {
-        return noBlockingPieceOnColumn(targetPosition, pieces);
+        return noBlockingPieceOnColumn(position, targetPosition, pieces);
     }
     else
     {
-        return noBlockingPieceOnRow(targetPosition, pieces);
+        return noBlockingPieceOnRow(position, targetPosition, pieces);
     }
 }
 
-bool Rook::noBlockingPieceOnColumn(const Position &targetPosition, const QMap<Position, Piece*> &pieces)
+bool RookMovementStrategy::noBlockingPieceOnColumn(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
 {
     int increment = (targetPosition.column - position.column) / std::abs(targetPosition.column - position.column);
     for (int i = position.column + 1; i < targetPosition.column; i += increment)
@@ -48,7 +48,7 @@ bool Rook::noBlockingPieceOnColumn(const Position &targetPosition, const QMap<Po
     return true;
 }
 
-bool Rook::noBlockingPieceOnRow(const Position &targetPosition, const QMap<Position, Piece*> &pieces)
+bool RookMovementStrategy::noBlockingPieceOnRow(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
 {
     int increment = (targetPosition.row - position.row) / std::abs(targetPosition.row - position.row);
     for (int i = position.row + 1; i < targetPosition.row; i += increment)

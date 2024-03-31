@@ -1,4 +1,5 @@
 #include "piece.h"
+#include "movement/movementstrategy.h"
 
 #include <QMap>
 #include <QDebug>
@@ -42,13 +43,13 @@ QString Piece::toString()
     return QString("%1, %2").arg(pgnIdentifier).arg(position.toString());
 }
 
-Piece* Piece::findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece *> &pieces)
+Piece Piece::findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece> &pieces)
 {
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
-        Piece* candidate = iterator->second;
+        Piece candidate = iterator->second;
 
-        if (candidate->getColor() == color && candidate->getPgnIdentifier() == pgnIdentifier)
+        if (candidate.getColor() == color && candidate.getPgnIdentifier() == pgnIdentifier)
         {
            return candidate;
         }
@@ -57,19 +58,19 @@ Piece* Piece::findPiece(QString pgnIdentifier, QString color, const QMap<Positio
     throw std::out_of_range("Piece not found");
 }
 
-Piece* Piece::findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece *> &pieces)
+Piece Piece::findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
 {
     if (pieces.isEmpty())
     {
         throw std::out_of_range("Piece not found");
     }
 
-    QList<Piece*> candidates;
+    QList<Piece> candidates;
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
-        Piece* actualBoardPiece = iterator->second;
+        Piece actualBoardPiece = iterator->second;
 
-        if (actualBoardPiece->getColor() == color && actualBoardPiece->getPgnIdentifier() == pgnIdentifier)
+        if (actualBoardPiece.getColor() == color && actualBoardPiece.getPgnIdentifier() == pgnIdentifier)
         {
             candidates.append(actualBoardPiece);
         }
@@ -79,8 +80,8 @@ Piece* Piece::findPiece(QString pgnIdentifier, QString color, const Position &ne
     QListIterator iterator(candidates);
     while (iterator.hasNext())
     {
-        Piece* candidate = iterator.next();
-        if (candidate->matchPosition(nextPosition, prerequisite, pieces))
+        Piece candidate = iterator.next();
+        if (candidate.matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;
         }
@@ -90,7 +91,7 @@ Piece* Piece::findPiece(QString pgnIdentifier, QString color, const Position &ne
 
 }
 
-bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces)
+bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
 {
     if (prerequisite.row != 0 && prerequisite.row != position.row)
     {
@@ -102,10 +103,10 @@ bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, c
         return false;
     }
 
-    return isTravelAllowed(nextPosition, pieces);
+    return canGoTo(nextPosition, pieces);
 }
 
-bool Piece::isTravelAllowed(const Position &nextPosition, const QMap<Position, Piece*> &pieces)
+bool Piece::canGoTo(const Position &nextPosition, const QMap<Position, Piece> &pieces)
 {
     if (nextPosition == position)
     {
@@ -116,5 +117,5 @@ bool Piece::isTravelAllowed(const Position &nextPosition, const QMap<Position, P
     {
         return false;
     }
-    return canGoTo(nextPosition, pieces);
+    return movementStrategy->canGoTo(position, nextPosition, pieces);
 }

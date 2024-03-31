@@ -3,12 +3,12 @@
 #include <QTextStream>
 #include <QDebug>
 
-#include "pieces/bishop.h"
-#include "pieces/king.h"
-#include "pieces/knight.h"
-#include "pieces/pawn.h"
-#include "pieces/queen.h"
-#include "pieces/rook.h"
+#include "movement/bishopmovementstrategy.h"
+#include "movement/kingmovementstrategy.h"
+#include "movement/knightmovementstrategy.h"
+#include "movement/pawnmovementstrategy.h"
+#include "movement/queenmovementstrategy.h"
+#include "movement/rookmovementstrategy.h"
 
 GameManager::GameManager() {}
 
@@ -28,7 +28,7 @@ GameManager::GameManager(QFile file)
     QTextStream stream(&file);
     QString fileContent = stream.read(MAX_PGN_CHARACTERS);
     parsePgn(fileContent);
-
+    qDebug() << "fin parse";
     while (hasPreviousMove())
     {
         qDebug() << "previousmove()";
@@ -38,56 +38,46 @@ GameManager::GameManager(QFile file)
 
 void GameManager::createStartingPieces()
 {
-    King* wKing = new King("White", Position(1, 5));
-    pieces.insert(Position(1, 5), wKing);
-    Queen* wQueen = new Queen("White", Position(1, 4));
-    pieces.insert(Position(1, 4), wQueen);
-    Bishop* wBishop1 = new Bishop("White", Position(1, 3));
-    pieces.insert(Position(1, 3), wBishop1);
-    Bishop* wBishop2 = new Bishop("White", Position(1, 6));
-    pieces.insert(Position(1, 6), wBishop2);
-    Knight* wKnight1 = new Knight("White", Position(1, 2));
-    pieces.insert(Position(1, 2), wKnight1);
-    Knight* wKnight2 = new Knight("White", Position(1, 7));
-    pieces.insert(Position(1, 7), wKnight2);
-    Rook* wRook1 = new Rook("White", Position(1, 1));
-    pieces.insert(Position(1, 1), wRook1);
-    Rook* wRook2 = new Rook("White", Position(1, 8));
-    pieces.insert(Position(1, 8), wRook2);
+    pieces.insert(Position(1, 5), Piece("K", "White", Position(1, 5)));
+    pieces.insert(Position(1, 4), Piece("Q", "White", Position(1, 4)));
+    pieces.insert(Position(1, 3), Piece("B", "White", Position(1, 3)));
+    pieces.insert(Position(1, 6), Piece("B", "White", Position(1, 6)));
+    pieces.insert(Position(1, 2), Piece("N", "White", Position(1, 2)));
+    pieces.insert(Position(1, 7), Piece("N", "White", Position(1, 7)));
+    pieces.insert(Position(1, 1), Piece("R", "White", Position(1, 1)));
+    pieces.insert(Position(1, 8), Piece("R", "White", Position(1, 8)));
 
     for (int i=0; i<8; i++)
     {
-        Pawn* wPawn = new Pawn("White", Position(2, i+1));
-        pieces.insert(Position(2, i+1), wPawn);
+        pieces.insert(Position(2, i+1), Piece("", "White", Position(2, i+1)));
     }
 
-    King* bKing = new King ("Black", Position(8, 5));
-    pieces.insert(Position(8, 5), bKing);
-    Queen* bQueen = new Queen ("Black", Position(8, 4));
-    pieces.insert(Position(8, 4), bQueen);
-    Bishop* bBishop1 = new Bishop ("Black", Position(8, 3));
-    pieces.insert(Position(8, 3), bBishop1);
-    Bishop* bBishop2 = new Bishop ("Black", Position(8, 6));
-    pieces.insert(Position(8, 6), bBishop2);
-    Knight* bKnight1 = new Knight ("Black", Position(8, 2));
-    pieces.insert(Position(8, 2), bKnight1);
-    Knight* bKnight2 = new Knight ("Black", Position(8, 7));
-    pieces.insert(Position(8, 7), bKnight2);
-    Rook* bRook1 = new Rook ("Black", Position(8, 1));
-    pieces.insert(Position(8, 1), bRook1);
-    Rook* bRook2 = new Rook ("Black", Position(8, 8));
-    pieces.insert(Position(8, 8), bRook2);
+    pieces.insert(Position(8, 5), Piece("K", "Black", Position(8, 5)));
+    pieces.insert(Position(8, 4), Piece("Q", "Black", Position(8, 4)));
+    pieces.insert(Position(8, 3), Piece("B", "Black", Position(8, 3)));
+    pieces.insert(Position(8, 6), Piece("B", "Black", Position(8, 6)));
+    pieces.insert(Position(8, 2), Piece("K", "Black", Position(8, 2)));
+    pieces.insert(Position(8, 7), Piece("K", "Black", Position(8, 7)));
+    pieces.insert(Position(8, 1), Piece("R", "Black", Position(8, 1)));
+    pieces.insert(Position(8, 8), Piece("R", "Black", Position(8, 8)));
 
     for (int i=0; i<8; i++)
     {
-        Pawn* bPawn = new Pawn("Black", Position(7, i+1));
-        pieces.insert(Position(7, i+1), bPawn);
+        pieces.insert(Position(7, i+1), Piece("", "Black", Position(7, i+1)));
     }
-    return;
+
+    qDebug() << "fin creation";
+
+    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+    {
+        Piece piece = iterator->second;
+        qDebug() << piece.toString();
+    }
 }
 
 void GameManager::parsePgn(QString fileContent)
 {
+    qDebug() << "debut parse";
     fileContent.replace('\n', ' ');
     QStringList pgnInstructions;
     pgnInstructions = fileContent.split(' ');
@@ -157,7 +147,7 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
 
     if (firstLetter == 'O')
     {
-        Piece* castlingKing = Piece::findPiece("K", color, pieces);
+        Piece castlingKing = Piece::findPiece("K", color, pieces);
         if (pgnInstruction == "O-O-O")
         {
             newMove.setQueensideCastlingKing(castlingKing);
@@ -286,7 +276,7 @@ bool GameManager::isCapture(QString pgnInstruction)
     return pgnInstruction.contains('x');
 }
 
-const QMap<Position, Piece*> GameManager::getPieces()
+const QMap<Position, Piece> GameManager::getPieces()
 {
     return pieces;
 }
@@ -295,8 +285,8 @@ void GameManager::nextMove()
 {
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
-        Piece* piece = iterator->second;
-        qDebug() << piece->toString();
+        Piece piece = iterator->second;
+        qDebug() << piece.toString();
     }
 
     if (nextMoves.isEmpty())
@@ -306,16 +296,16 @@ void GameManager::nextMove()
     }
 
     Move nextMove = nextMoves.takeFirst();
-    Piece* piece = nextMove.getPiece();
+    Piece piece = nextMove.getPiece();
 
     if (nextMove.isCastlingKingside())
     {
-        ((King *) piece)->castleKingside(pieces);
+        nextMove.castleKingside(pieces);
         movesDone.append(nextMove);
         return;
     }
 
-    Position previousPosition = piece->position;
+    Position previousPosition = piece.position;
 
     if (previousPosition != nextMove.getPreviousPosition())
     {
@@ -334,8 +324,7 @@ void GameManager::nextMove()
         takenPieces.append(pieces.value(nextMove.getNextPosition()));
     }
 
-    piece->position = nextMove.getNextPosition();
-    //TODO capture
+    piece.position = nextMove.getNextPosition();
     pieces.remove(previousPosition);
     pieces.insert(nextMove.getNextPosition(), piece);
 
@@ -353,16 +342,16 @@ void GameManager::previousMove()
     }
 
     Move previousMove = movesDone.takeFirst();
-    Piece* piece = previousMove.getPiece();
+    Piece piece = previousMove.getPiece();
 
     if (previousMove.isCastlingKingside())
     {
-        ((King *) piece)->undoCastleKingside(pieces);
+        previousMove.undoCastleKingside(pieces);
         nextMoves.append(previousMove);
         return;
     }
 
-    Position currentPosition = piece->position;
+    Position currentPosition = piece.position;
     if (currentPosition != previousMove.getNextPosition())
     {
         qDebug() << "error1";
@@ -377,7 +366,7 @@ void GameManager::previousMove()
         return;
     }
 
-    piece->position = previousMove.getPreviousPosition();
+    piece.position = previousMove.getPreviousPosition();
     //TODO capture
     pieces.remove(currentPosition);
     pieces.insert(previousMove.getPreviousPosition(), piece);
@@ -385,8 +374,8 @@ void GameManager::previousMove()
     if (previousMove.isCapture())
     {
         qDebug() << "capture";
-        qDebug() << (previousMove.getCapturedPiece()->position.toString());
-        previousMove.getCapturedPiece()->position = currentPosition;
+        qDebug() << (previousMove.getCapturedPiece().position.toString());
+        previousMove.getCapturedPiece().position = currentPosition;
         pieces.insert(currentPosition, previousMove.getCapturedPiece());
     }
 
