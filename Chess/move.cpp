@@ -12,6 +12,7 @@ Move::Move(Piece piece, Position previousPosition, Position nextPosition)
     : piece(piece), previousPosition(previousPosition), nextPosition(nextPosition)
 {
     capture = false;
+    promotion = false;
     castlingKingside = false;
     castlingQueenside = false;
 }
@@ -41,14 +42,24 @@ Position Move::getNextPosition()
     return nextPosition;
 }
 
+bool Move::isCapture()
+{
+    return capture;
+}
+
 Piece Move::getCapturedPiece()
 {
     return capturedPiece;
 }
 
-bool Move::isCapture()
+bool Move::isPromotion()
 {
-    return capture;
+    return promotion;
+}
+
+Piece Move::getPiecePromotedTo()
+{
+    return piecePromotedTo;
 }
 
 bool Move::isCastlingKingside()
@@ -65,6 +76,12 @@ void Move::setCapturedPiece(Piece piece)
 {
     capturedPiece = Piece(piece);
     capture = true;
+}
+
+void Move::setPiecePromotedTo(Piece piece)
+{
+    piecePromotedTo = Piece(piece);
+    promotion = true;
 }
 
 void Move::setKingsideCastlingKing(Piece castlingKing)

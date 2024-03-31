@@ -18,13 +18,17 @@ public:
     Piece getPiece();
     Position getPreviousPosition();
     Position getNextPosition();
-    Piece getCapturedPiece();
 
     bool isCapture();
+    Piece getCapturedPiece();
+    bool isPromotion();
+    Piece getPiecePromotedTo();
+
     bool isCastlingKingside();
     bool isCastlingQueenside();
 
     void setCapturedPiece(Piece capturedPiece);
+    void setPiecePromotedTo(Piece piecePromotedTo);
     void setKingsideCastlingKing(Piece castlingKing);
     void setQueensideCastlingKing(Piece castlingKing);
 
@@ -39,8 +43,11 @@ private:
     Piece piece;
     Position previousPosition;
     Position nextPosition;
+
     bool capture;
     Piece capturedPiece;
+    bool promotion;
+    Piece piecePromotedTo;
     bool castlingKingside;
     bool castlingQueenside;
 };
