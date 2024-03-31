@@ -155,6 +155,11 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
         newMove.setCapturedPiece(pieces.value(nextPosition));
     }
 
+    if (isPromotion(pgnInstruction))
+    {
+        newMove.setPiecePromotedTo(getPiecePromotedToPgnIdentifier(pgnInstruction));
+    }
+
     nextMoves.append(newMove);
 
     nextMove();
@@ -256,6 +261,27 @@ bool GameManager::isCapture(QString pgnInstruction)
     return pgnInstruction.contains('x');
 }
 
+bool GameManager::isPromotion(QString pgnInstruction)
+{
+    return pgnInstruction.contains('=');
+}
+
+QString GameManager::getPiecePromotedToPgnIdentifier(QString pgnInstruction)
+{
+    while (pgnInstruction.size() > 1 && pgnInstruction.front() != '=')
+    {
+        pgnInstruction.removeFirst();
+    }
+
+    if (pgnInstruction.size() <= 1)
+    {
+        //TODO error
+        return "";
+    }
+
+    return pgnInstruction[1];
+}
+
 const QMap<Position, Piece> GameManager::getPieces()
 {
     return pieces;
@@ -292,6 +318,13 @@ void GameManager::nextMove()
     {
         //TODO error
         return;
+    }
+
+    if (nextMove.isPromotion())
+    {
+        piece.position = nextMove.getNextPosition();
+        takenPieces.append(piece);
+        piece = nextMove.getPiecePromotedTo();
     }
 
     if (nextMove.isCapture())

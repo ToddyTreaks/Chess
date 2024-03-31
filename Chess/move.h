@@ -28,7 +28,7 @@ public:
     bool isCastlingQueenside();
 
     void setCapturedPiece(Piece capturedPiece);
-    void setPiecePromotedTo(Piece piecePromotedTo);
+    void setPiecePromotedTo(QString piecePromotedToIdentifier);
     void setKingsideCastlingKing(Piece castlingKing);
     void setQueensideCastlingKing(Piece castlingKing);
 

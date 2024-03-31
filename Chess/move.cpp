@@ -78,9 +78,9 @@ void Move::setCapturedPiece(Piece piece)
     capture = true;
 }
 
-void Move::setPiecePromotedTo(Piece piece)
+void Move::setPiecePromotedTo(QString piecePromotedToIdentifier)
 {
-    piecePromotedTo = Piece(piece);
+    piecePromotedTo = Piece(piece.getColor(), piecePromotedToIdentifier, nextPosition);
     promotion = true;
 }
 

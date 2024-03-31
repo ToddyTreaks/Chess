@@ -47,6 +47,8 @@ private:
     int rowNumber(QChar rowInput);
     int columnNumber(QChar columnInput);
     bool isCapture(QString pgnInstruction);
+    bool isPromotion(QString pgnInstruction);
+    QString getPiecePromotedToPgnIdentifier(QString pgnInstruction);
 };
 
 #endif // GAMEMANAGER_H
