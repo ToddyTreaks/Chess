@@ -10,7 +10,7 @@ BoardDrawer::BoardDrawer()
     darkPen(QColor(53, 124, 194))
 {}
 
-void BoardDrawer::initializeBoard(QGraphicsScene* scene)
+void BoardDrawer::drawSquares(QGraphicsScene* scene)
 {
     for (int x=0; x<8; x++)
     {
@@ -30,6 +30,8 @@ void BoardDrawer::initializeBoard(QGraphicsScene* scene)
 
 void BoardDrawer::drawPieces(QGraphicsScene* scene, const QMap<Position, Piece> &pieces)
 {
+    scene->clear();
+    drawSquares(scene);
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
         Piece piece = iterator->second;

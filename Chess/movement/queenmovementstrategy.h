@@ -3,7 +3,7 @@
 
 #include "movementstrategy.h"
 
-class QueenMovementStrategy : public Piece
+class QueenMovementStrategy : public MovementStrategy
 {
 public:
     QueenMovementStrategy();

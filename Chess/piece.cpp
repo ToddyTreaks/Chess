@@ -4,6 +4,13 @@
 #include <QMap>
 #include <QDebug>
 
+#include "movement/bishopmovementstrategy.h"
+#include "movement/kingmovementstrategy.h"
+#include "movement/knightmovementstrategy.h"
+#include "movement/pawnmovementstrategy.h"
+#include "movement/queenmovementstrategy.h"
+#include "movement/rookmovementstrategy.h"
+
 Piece::Piece() {}
 
 Piece::Piece(const Piece &piece)
@@ -16,11 +23,36 @@ Piece::Piece(QString color, QString pgnIdentifier, Position position)
     iconFileName = QString(":/images/img/%1_%2.png");
     iconFileName = iconFileName.arg(color);
     iconFileName = iconFileName.arg(pgnIdentifier);
+
+    if (pgnIdentifier == "B")
+    {
+        movementStrategy = new BishopMovementStrategy();
+    }
+    else if (pgnIdentifier == "K")
+    {
+        movementStrategy = new KingMovementStrategy();
+    }
+    else if (pgnIdentifier == "N")
+    {
+        movementStrategy = new KnightMovementStrategy();
+    }
+    else if (pgnIdentifier == "Q")
+    {
+        movementStrategy = new QueenMovementStrategy();
+    }
+    else if (pgnIdentifier == "R")
+    {
+        movementStrategy = new RookMovementStrategy();
+    }
+    else
+    {
+        movementStrategy = new PawnMovementStrategy();
+    }
 }
 
 Piece::~Piece()
 {
-    qDebug() << "piece détruite";
+    // qDebug() << "piece détruite";
 }
 
 QString Piece::getColor()

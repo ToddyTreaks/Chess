@@ -12,10 +12,9 @@ MainWindow::MainWindow(QWidget *parent)
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-    GameManager manager;
-    gameManager = &manager;
+    gameManager = new GameManager();
 
-    boardDrawer.initializeBoard(scene);
+    boardDrawer.drawSquares(scene);
 }
 
 MainWindow::~MainWindow()
@@ -27,6 +26,7 @@ void MainWindow::on_nextMove_clicked()
 {
     if (gameManager->hasNextMove())
     {
+        qDebug() << "";
         gameManager->nextMove();
     }
     boardDrawer.drawPieces(scene, gameManager->getPieces());
@@ -47,8 +47,7 @@ void MainWindow::on_actionOpen_triggered()
 {
     QString fileName;
     fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
-    GameManager manager(fileName);
-    gameManager = &manager;
+    gameManager = new GameManager(fileName);
 
     boardDrawer.drawPieces(scene, gameManager->getPieces());
 }

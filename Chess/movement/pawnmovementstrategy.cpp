@@ -6,8 +6,8 @@ PawnMovementStrategy::PawnMovementStrategy() {}
 //     : Piece(color, "", position)
 // {}
 
-bool PawnMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces) {
-
+bool PawnMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
+{
     int x_target = std::abs(targetPosition.column - position.column);
     int y_target = std::abs(targetPosition.row - position.row);
 

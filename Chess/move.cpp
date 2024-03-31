@@ -1,5 +1,7 @@
 #include "move.h"
 
+#include <QDebug>
+
 Move::Move() {}
 
 Move::Move(Piece piece, Position nextPosition)
@@ -59,9 +61,9 @@ bool Move::isCastlingQueenside()
     return castlingQueenside;
 }
 
-void Move::setCapturedPiece(Piece capturedPiece)
+void Move::setCapturedPiece(Piece piece)
 {
-    capturedPiece = capturedPiece;
+    capturedPiece = Piece(piece);
     capture = true;
 }
 

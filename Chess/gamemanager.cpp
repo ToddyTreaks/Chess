@@ -3,13 +3,6 @@
 #include <QTextStream>
 #include <QDebug>
 
-#include "movement/bishopmovementstrategy.h"
-#include "movement/kingmovementstrategy.h"
-#include "movement/knightmovementstrategy.h"
-#include "movement/pawnmovementstrategy.h"
-#include "movement/queenmovementstrategy.h"
-#include "movement/rookmovementstrategy.h"
-
 GameManager::GameManager() {}
 
 GameManager::GameManager(QString fileName)
@@ -28,7 +21,6 @@ GameManager::GameManager(QFile file)
     QTextStream stream(&file);
     QString fileContent = stream.read(MAX_PGN_CHARACTERS);
     parsePgn(fileContent);
-    qDebug() << "fin parse";
     while (hasPreviousMove())
     {
         qDebug() << "previousmove()";
@@ -38,46 +30,37 @@ GameManager::GameManager(QFile file)
 
 void GameManager::createStartingPieces()
 {
-    pieces.insert(Position(1, 5), Piece("K", "White", Position(1, 5)));
-    pieces.insert(Position(1, 4), Piece("Q", "White", Position(1, 4)));
-    pieces.insert(Position(1, 3), Piece("B", "White", Position(1, 3)));
-    pieces.insert(Position(1, 6), Piece("B", "White", Position(1, 6)));
-    pieces.insert(Position(1, 2), Piece("N", "White", Position(1, 2)));
-    pieces.insert(Position(1, 7), Piece("N", "White", Position(1, 7)));
-    pieces.insert(Position(1, 1), Piece("R", "White", Position(1, 1)));
-    pieces.insert(Position(1, 8), Piece("R", "White", Position(1, 8)));
+    pieces.insert(Position(1, 5), Piece("White", "K", Position(1, 5)));
+    pieces.insert(Position(1, 4), Piece("White", "Q", Position(1, 4)));
+    pieces.insert(Position(1, 3), Piece("White", "B", Position(1, 3)));
+    pieces.insert(Position(1, 6), Piece("White", "B", Position(1, 6)));
+    pieces.insert(Position(1, 2), Piece("White", "N", Position(1, 2)));
+    pieces.insert(Position(1, 7), Piece("White", "N", Position(1, 7)));
+    pieces.insert(Position(1, 1), Piece("White", "R", Position(1, 1)));
+    pieces.insert(Position(1, 8), Piece("White", "R", Position(1, 8)));
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(2, i+1), Piece("", "White", Position(2, i+1)));
+        pieces.insert(Position(2, i+1), Piece("White", "", Position(2, i+1)));
     }
 
-    pieces.insert(Position(8, 5), Piece("K", "Black", Position(8, 5)));
-    pieces.insert(Position(8, 4), Piece("Q", "Black", Position(8, 4)));
-    pieces.insert(Position(8, 3), Piece("B", "Black", Position(8, 3)));
-    pieces.insert(Position(8, 6), Piece("B", "Black", Position(8, 6)));
-    pieces.insert(Position(8, 2), Piece("K", "Black", Position(8, 2)));
-    pieces.insert(Position(8, 7), Piece("K", "Black", Position(8, 7)));
-    pieces.insert(Position(8, 1), Piece("R", "Black", Position(8, 1)));
-    pieces.insert(Position(8, 8), Piece("R", "Black", Position(8, 8)));
+    pieces.insert(Position(8, 5), Piece("Black", "K", Position(8, 5)));
+    pieces.insert(Position(8, 4), Piece("Black", "Q", Position(8, 4)));
+    pieces.insert(Position(8, 3), Piece("Black", "B", Position(8, 3)));
+    pieces.insert(Position(8, 6), Piece("Black", "B", Position(8, 6)));
+    pieces.insert(Position(8, 2), Piece("Black", "N", Position(8, 2)));
+    pieces.insert(Position(8, 7), Piece("Black", "N", Position(8, 7)));
+    pieces.insert(Position(8, 1), Piece("Black", "R", Position(8, 1)));
+    pieces.insert(Position(8, 8), Piece("Black", "R", Position(8, 8)));
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(7, i+1), Piece("", "Black", Position(7, i+1)));
-    }
-
-    qDebug() << "fin creation";
-
-    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
-    {
-        Piece piece = iterator->second;
-        qDebug() << piece.toString();
+        pieces.insert(Position(7, i+1), Piece("Black", "", Position(7, i+1)));
     }
 }
 
 void GameManager::parsePgn(QString fileContent)
 {
-    qDebug() << "debut parse";
     fileContent.replace('\n', ' ');
     QStringList pgnInstructions;
     pgnInstructions = fileContent.split(' ');
@@ -175,9 +158,6 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
     nextMoves.append(newMove);
 
     nextMove();
-
-    return;
-
 }
 
 Position GameManager::getPrerequisite(QString pgnInstruction)
@@ -283,12 +263,6 @@ const QMap<Position, Piece> GameManager::getPieces()
 
 void GameManager::nextMove()
 {
-    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
-    {
-        Piece piece = iterator->second;
-        qDebug() << piece.toString();
-    }
-
     if (nextMoves.isEmpty())
     {
         //TODO error
@@ -301,17 +275,11 @@ void GameManager::nextMove()
     if (nextMove.isCastlingKingside())
     {
         nextMove.castleKingside(pieces);
-        movesDone.append(nextMove);
+        movesDone.prepend(nextMove);
         return;
     }
 
     Position previousPosition = piece.position;
-
-    if (previousPosition != nextMove.getPreviousPosition())
-    {
-        //TODO error
-        return;
-    }
 
     if (!pieces.contains(previousPosition))
     {
@@ -347,34 +315,24 @@ void GameManager::previousMove()
     if (previousMove.isCastlingKingside())
     {
         previousMove.undoCastleKingside(pieces);
-        nextMoves.append(previousMove);
+        nextMoves.prepend(previousMove);
         return;
     }
 
-    Position currentPosition = piece.position;
-    if (currentPosition != previousMove.getNextPosition())
-    {
-        qDebug() << "error1";
-        //TODO error
-        return;
-    }
+    Position currentPosition = previousMove.getNextPosition();
 
     if (!pieces.contains(currentPosition))
     {
-        qDebug() << "error2";
         //TODO error
         return;
     }
 
     piece.position = previousMove.getPreviousPosition();
-    //TODO capture
     pieces.remove(currentPosition);
     pieces.insert(previousMove.getPreviousPosition(), piece);
 
     if (previousMove.isCapture())
     {
-        qDebug() << "capture";
-        qDebug() << (previousMove.getCapturedPiece().position.toString());
         previousMove.getCapturedPiece().position = currentPosition;
         pieces.insert(currentPosition, previousMove.getCapturedPiece());
     }
