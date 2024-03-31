@@ -2,10 +2,6 @@
 
 KnightMovementStrategy::KnightMovementStrategy() {}
 
-// KnightMovementStrategy::KnightMovementStrategy(QString color, Position position)
-//     : Piece(color, "N", position)
-// {}
-
 bool KnightMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces) {
 
     int x_target = std::abs(targetPosition.column - position.column);

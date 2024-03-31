@@ -2,14 +2,6 @@
 
 RookMovementStrategy::RookMovementStrategy() {}
 
-// RookMovementStrategy::RookMovementStrategy(const Piece &piece)
-//     : Piece(piece)
-// {}
-
-// RookMovementStrategy::RookMovementStrategy(QString color, Position position)
-//     : Piece(color, "R", position)
-// {}
-
 bool RookMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
 {
     int x_target = std::abs(targetPosition.column - position.column);

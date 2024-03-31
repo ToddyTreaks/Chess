@@ -2,14 +2,6 @@
 
 BishopMovementStrategy::BishopMovementStrategy() {}
 
-// BishopMovementStrategy::BishopMovementStrategy(const Piece &piece)
-//     : Piece(piece)
-// {}
-
-// BishopMovementStrategy::BishopMovementStrategy(QString color, Position position)
-//     : Piece(color, "B", position)
-// {}
-
 bool BishopMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
 {
     int x_target = std::abs(targetPosition.column - position.column);

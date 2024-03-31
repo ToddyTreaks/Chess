@@ -2,10 +2,6 @@
 
 KingMovementStrategy::KingMovementStrategy() {}
 
-// KingMovementStrategy::KingMovementStrategy(QString color, Position position)
-//     : Piece(color, "K", position)
-// {}
-
 bool KingMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces) {
 
     int x_target = std::abs(targetPosition.column - position.column);
