@@ -10,11 +10,11 @@ Piece::Piece(const Piece &piece)
 {}
 
 Piece::Piece(QString color, QString pgnIdentifier, Position position)
-    : color(color), pgnIdentifier(pgnIdentifier), position(position), icon()
+    : color(color), pgnIdentifier(pgnIdentifier), position(position)
 {
-    //TODO : change this
-    QString iconFileName("img/pawn_icon.png");
-    icon = QIcon(iconFileName);
+    iconFileName = QString(":/images/img/%1_%2.png");
+    iconFileName = iconFileName.arg(color);
+    iconFileName = iconFileName.arg(pgnIdentifier);
 }
 
 Piece::~Piece() {}
@@ -27,6 +27,11 @@ QString Piece::getColor()
 QString Piece::getPgnIdentifier()
 {
     return pgnIdentifier;
+}
+
+QString Piece::getIconFileName()
+{
+    return iconFileName;
 }
 
 QString Piece::toString()

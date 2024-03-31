@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     gameManager = &manager;
 
     boardDrawer.initializeBoard(scene);
+    boardDrawer.drawPieces(scene, gameManager->getPieces());
 }
 
 MainWindow::~MainWindow()

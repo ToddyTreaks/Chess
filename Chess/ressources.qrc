@@ -1,6 +1,17 @@
 <RCC>
     <qresource prefix="/images">
-        <file>img/pawn_icon.png</file>
         <file>img/chessboard.png</file>
+        <file>img/black_B.png</file>
+        <file>img/black_K.png</file>
+        <file>img/Black_N.png</file>
+        <file>img/Black_.png</file>
+        <file>img/Black_Q.png</file>
+        <file>img/Black_R.png</file>
+        <file>img/White_B.png</file>
+        <file>img/White_K.png</file>
+        <file>img/White_N.png</file>
+        <file>img/White_.png</file>
+        <file>img/White_Q.png</file>
+        <file>img/White_R.png</file>
     </qresource>
 </RCC>

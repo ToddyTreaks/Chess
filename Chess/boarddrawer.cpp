@@ -25,14 +25,19 @@ void BoardDrawer::initializeBoard(QGraphicsScene* scene)
     }
 }
 
-void BoardDrawer::drawBoard(QGraphicsScene* scene)
+void BoardDrawer::drawPieces(QGraphicsScene* scene, const QMap<Position, Piece *> &pieces)
 {
-    return;
+    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+    {
+        Piece* piece = iterator->second;
+        drawPiece(piece, scene);
+    }
 }
 
 void BoardDrawer::drawPiece(Piece* piece, QGraphicsScene* scene)
 {
-    QPixmap icon(":/images/img/pawn_icon.png");
+    QPixmap icon(piece->getIconFileName());
+    icon = icon.scaled(SQUARE_SIZE, SQUARE_SIZE, Qt::KeepAspectRatio);
     QGraphicsPixmapItem* iconItem = scene->addPixmap(icon);
     int x = getxFromPosition(piece->position);
     int y = getyFromPosition(piece->position);

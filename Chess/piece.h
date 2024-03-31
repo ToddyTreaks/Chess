@@ -2,7 +2,7 @@
 #define PIECE_H
 
 #include <QString>
-#include <QIcon>
+#include <QFile>
 
 #include "position.h"
 #include <QMap>
@@ -19,6 +19,8 @@ public:
 
     QString getColor();
     QString getPgnIdentifier();
+    QString getIconFileName();
+
     QString toString();
 
     bool matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece*> &pieces);
@@ -33,7 +35,7 @@ protected:
 
     QString color;
     QString pgnIdentifier;
-    QIcon icon;
+    QString iconFileName;
 };
 
 #endif // PIECE_H
