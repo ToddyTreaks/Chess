@@ -6,7 +6,7 @@ King::King(QString color, Position position)
     : Piece(color, "K", position)
 {}
 
-void King::castleKingside(QMap<Position, Piece *> &pieces)
+void King::castleKingside(QMap<Position, Piece*> &pieces)
 {
     if (!canCastleKingside(pieces))
     {
@@ -48,13 +48,13 @@ bool King::canGoTo(const Position &targetPosition, const QMap<Position, Piece*> 
     return false;
 }
 
-bool King::canCastleKingside(const QMap<Position, Piece *> &pieces)
+bool King::canCastleKingside(const QMap<Position, Piece*> &pieces)
 {
     // TODO
     return true;
 }
 
-bool King::canCastleQueenside(const QMap<Position, Piece *> &pieces)
+bool King::canCastleQueenside(const QMap<Position, Piece*> &pieces)
 {
     // TODO
     return true;

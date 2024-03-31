@@ -36,6 +36,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         pieces/knight.h pieces/knight.cpp
         pgnTests/test1.pgn
         pgnTests/test2.pgn
+        boarddrawer.h boarddrawer.cpp
+        ressources.qrc
+        boardsquare.h boardsquare.cpp
 
     )
 # Define target properties for Android with Qt 6 as:
