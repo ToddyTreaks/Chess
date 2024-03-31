@@ -25,13 +25,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_nextMove_clicked()
 {
-    return;
+    if (gameManager->hasNextMove())
+    {
+        gameManager->nextMove();
+    }
+    boardDrawer.drawPieces(scene, gameManager->getPieces());
 }
 
 
 void MainWindow::on_previousMove_clicked()
 {
-    return;
+    if (gameManager->hasPreviousMove())
+    {
+        gameManager->previousMove();
+    }
+    boardDrawer.drawPieces(scene, gameManager->getPieces());
 }
 
 
