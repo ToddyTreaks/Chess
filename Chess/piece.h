@@ -7,8 +7,6 @@
 #include "position.h"
 #include <QMap>
 
-class Board;
-
 class Piece
 {
 public:

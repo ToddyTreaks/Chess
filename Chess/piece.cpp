@@ -3,8 +3,6 @@
 #include <QMap>
 #include <QDebug>
 
-#include "board.h"
-
 Piece::Piece() {}
 
 Piece::Piece(const Piece &piece)

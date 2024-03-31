@@ -27,7 +27,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         move.h move.cpp
         position.h position.cpp
         piece.h piece.cpp
-        board.h board.cpp
         pieces/king.h pieces/king.cpp
         pieces/queen.h pieces/queen.cpp
         pieces/pawn.h pieces/pawn.cpp
@@ -39,7 +38,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         boarddrawer.h boarddrawer.cpp
         ressources.qrc
         boardsquare.h boardsquare.cpp
-
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Chess APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

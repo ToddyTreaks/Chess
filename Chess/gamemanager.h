@@ -7,7 +7,6 @@
 #include <QList>
 
 #include "move.h"
-#include "board.h"
 #include "position.h"
 
 class GameManager
@@ -23,7 +22,6 @@ public:
     void toPgn(QFile file);
 
 private:
-    Board board;
     QList<Move> nextMoves;
     QList<Move> movesDone;
     QMap<Position, Piece*> pieces;
