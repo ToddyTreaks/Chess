@@ -4,7 +4,10 @@
 #include <QGraphicsPixmapItem>
 
 BoardDrawer::BoardDrawer()
-    : lightBrush(Qt::yellow), darkBrush(Qt::black), lightPen(Qt::yellow), darkPen(Qt::black)
+    : lightBrush(QColor(235, 236, 208)),
+    darkBrush(QColor(53, 124, 194)),
+    lightPen(QColor(235, 236, 208)),
+    darkPen(QColor(53, 124, 194))
 {}
 
 void BoardDrawer::initializeBoard(QGraphicsScene* scene)
