@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QFile>
-#include <QDateTime>
 #include <QList>
 
 #include "move.h"

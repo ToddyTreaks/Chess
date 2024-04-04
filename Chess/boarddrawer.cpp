@@ -18,11 +18,11 @@ void BoardDrawer::drawSquares(QGraphicsScene* scene)
         {
             if ((x+y) % 2 == 0)
             {
-                scene->addRect(x*SQUARE_SIZE, y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, darkPen, darkBrush);
+                scene->addRect(x*SQUARE_SIZE, y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, lightPen, lightBrush);
             }
             else
             {
-                scene->addRect(x*SQUARE_SIZE, y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, lightPen, lightBrush);
+                scene->addRect(x*SQUARE_SIZE, y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, darkPen, darkBrush);
             }
         }
     }
@@ -57,5 +57,5 @@ int BoardDrawer::getxFromPosition(Position position)
 
 int BoardDrawer::getyFromPosition(Position position)
 {
-    return position.row - 1;
+    return 8 - position.row;
 }

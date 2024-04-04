@@ -50,10 +50,7 @@ Piece::Piece(QString color, QString pgnIdentifier, Position position)
     }
 }
 
-Piece::~Piece()
-{
-    // qDebug() << "piece détruite";
-}
+Piece::~Piece() {}
 
 QString Piece::getColor()
 {
