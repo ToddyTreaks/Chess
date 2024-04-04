@@ -14,14 +14,21 @@
 Piece::Piece() {}
 
 Piece::Piece(const Piece &piece)
-    : Piece(piece.color, piece.pgnIdentifier, piece.position)
+    : Piece(piece.colorIsWhite, piece.pgnIdentifier, piece.position)
 {}
 
-Piece::Piece(QString color, QString pgnIdentifier, Position position)
-    : color(color), pgnIdentifier(pgnIdentifier), position(position)
+Piece::Piece(bool colorIsWhite, QString pgnIdentifier, Position position)
+    : colorIsWhite(colorIsWhite), pgnIdentifier(pgnIdentifier), position(position)
 {
     iconFileName = QString(":/images/img/%1_%2.png");
-    iconFileName = iconFileName.arg(color);
+    if (colorIsWhite)
+    {
+        iconFileName = iconFileName.arg("White");
+    }
+    else
+    {
+        iconFileName = iconFileName.arg("Black");
+    }
     iconFileName = iconFileName.arg(pgnIdentifier);
 
     if (pgnIdentifier == "B")
@@ -52,9 +59,9 @@ Piece::Piece(QString color, QString pgnIdentifier, Position position)
 
 Piece::~Piece() {}
 
-QString Piece::getColor()
+bool Piece::isWhite()
 {
-    return color;
+    return colorIsWhite;
 }
 
 QString Piece::getPgnIdentifier()
@@ -72,13 +79,13 @@ QString Piece::toString()
     return QString("%1, %2").arg(pgnIdentifier).arg(position.toString());
 }
 
-Piece Piece::findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece> &pieces)
+Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const QMap<Position, Piece> &pieces)
 {
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
         Piece candidate = iterator->second;
 
-        if (candidate.getColor() == color && candidate.getPgnIdentifier() == pgnIdentifier)
+        if (candidate.isWhite() == colorIsWhite && candidate.getPgnIdentifier() == pgnIdentifier)
         {
            return candidate;
         }
@@ -87,7 +94,7 @@ Piece Piece::findPiece(QString pgnIdentifier, QString color, const QMap<Position
     throw std::out_of_range("Piece not found");
 }
 
-Piece Piece::findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
+Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
 {
     if (pieces.isEmpty())
     {
@@ -98,8 +105,7 @@ Piece Piece::findPiece(QString pgnIdentifier, QString color, const Position &nex
     for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
     {
         Piece actualBoardPiece = iterator->second;
-
-        if (actualBoardPiece.getColor() == color && actualBoardPiece.getPgnIdentifier() == pgnIdentifier)
+        if (actualBoardPiece.isWhite() == colorIsWhite && actualBoardPiece.getPgnIdentifier() == pgnIdentifier)
         {
             candidates.append(actualBoardPiece);
         }
@@ -142,7 +148,7 @@ bool Piece::canGoTo(const Position &nextPosition, const QMap<Position, Piece> &p
         return false;
     }
 
-    if (!nextPosition.isEmpty(color, pieces))
+    if (!nextPosition.isEmpty(colorIsWhite, pieces))
     {
         return false;
     }

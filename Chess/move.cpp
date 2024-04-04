@@ -80,7 +80,7 @@ void Move::setCapturedPiece(Piece piece)
 
 void Move::setPiecePromotedTo(QString piecePromotedToIdentifier)
 {
-    piecePromotedTo = Piece(piece.getColor(), piecePromotedToIdentifier, nextPosition);
+    piecePromotedTo = Piece(piece.isWhite(), piecePromotedToIdentifier, nextPosition);
     promotion = true;
 }
 
@@ -107,7 +107,7 @@ void Move::castleKingside(QMap<Position, Piece> &pieces)
     Piece rook;
     Position rookPosition(1, 8);
 
-    if (piece.getColor() == "Black")
+    if (!piece.isWhite())
     {
         rookPosition.row = 8;
     }
@@ -137,7 +137,7 @@ void Move::castleQueenside(QMap<Position, Piece> &pieces)
     Piece rook;
     Position rookPosition(1, 1);
 
-    if (piece.getColor() == "Black")
+    if (!piece.isWhite())
     {
         rookPosition.row = 8;
     }
@@ -161,7 +161,7 @@ void Move::undoCastleKingside(QMap<Position, Piece> &pieces)
     Piece rook;
     Position rookPosition(1, 6);
 
-    if (piece.getColor() == "Black")
+    if (!piece.isWhite())
     {
         rookPosition.row = 8;
     }
@@ -185,7 +185,7 @@ void Move::undoCastleQueenside(QMap<Position, Piece> &pieces)
     Piece rook;
     Position rookPosition(1, 4);
 
-    if (piece.getColor() == "Black")
+    if (!piece.isWhite())
     {
         rookPosition.row = 8;
     }

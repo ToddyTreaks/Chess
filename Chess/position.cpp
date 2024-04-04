@@ -23,13 +23,13 @@ bool Position::isEmpty(const QMap<Position, Piece> &pieces) const
     return !pieces.contains(*this);
 }
 
-bool Position::isEmpty(QString color, const QMap<Position, Piece> &pieces) const
+bool Position::isEmpty(bool colorIsWhite, const QMap<Position, Piece> &pieces) const
 {
     if (!pieces.contains(*this))
     {
         return true;
     }
-    return !(pieces.value(*this).getColor() == color);
+    return !(pieces.value(*this).isWhite() == colorIsWhite);
 }
 
 bool Position::operator<(const Position& other) const

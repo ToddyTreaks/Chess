@@ -37,7 +37,7 @@ private:
     void parsePgn(QString fileContent);
     bool isEndingIndication(QString pgnInstruction);
     bool isMoveNumber(QString pgnInstruction);
-    void instanciateMoves(QString pgnInstruction, QString color);
+    void instanciateMoves(QString pgnInstruction, bool whiteToPlay);
     Position getPrerequisite(QString pgnInstruction);
     Position getNextPosition(QString pgnInstruction);
     bool isValidPieceInput(QChar pgnChar);

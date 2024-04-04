@@ -30,32 +30,32 @@ GameManager::GameManager(QFile file)
 
 void GameManager::createStartingPieces()
 {
-    pieces.insert(Position(1, 5), Piece("White", "K", Position(1, 5)));
-    pieces.insert(Position(1, 4), Piece("White", "Q", Position(1, 4)));
-    pieces.insert(Position(1, 3), Piece("White", "B", Position(1, 3)));
-    pieces.insert(Position(1, 6), Piece("White", "B", Position(1, 6)));
-    pieces.insert(Position(1, 2), Piece("White", "N", Position(1, 2)));
-    pieces.insert(Position(1, 7), Piece("White", "N", Position(1, 7)));
-    pieces.insert(Position(1, 1), Piece("White", "R", Position(1, 1)));
-    pieces.insert(Position(1, 8), Piece("White", "R", Position(1, 8)));
+    pieces.insert(Position(1, 5), Piece(true, "K", Position(1, 5)));
+    pieces.insert(Position(1, 4), Piece(true, "Q", Position(1, 4)));
+    pieces.insert(Position(1, 3), Piece(true, "B", Position(1, 3)));
+    pieces.insert(Position(1, 6), Piece(true, "B", Position(1, 6)));
+    pieces.insert(Position(1, 2), Piece(true, "N", Position(1, 2)));
+    pieces.insert(Position(1, 7), Piece(true, "N", Position(1, 7)));
+    pieces.insert(Position(1, 1), Piece(true, "R", Position(1, 1)));
+    pieces.insert(Position(1, 8), Piece(true, "R", Position(1, 8)));
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(2, i+1), Piece("White", "", Position(2, i+1)));
+        pieces.insert(Position(2, i+1), Piece(true, "", Position(2, i+1)));
     }
 
-    pieces.insert(Position(8, 5), Piece("Black", "K", Position(8, 5)));
-    pieces.insert(Position(8, 4), Piece("Black", "Q", Position(8, 4)));
-    pieces.insert(Position(8, 3), Piece("Black", "B", Position(8, 3)));
-    pieces.insert(Position(8, 6), Piece("Black", "B", Position(8, 6)));
-    pieces.insert(Position(8, 2), Piece("Black", "N", Position(8, 2)));
-    pieces.insert(Position(8, 7), Piece("Black", "N", Position(8, 7)));
-    pieces.insert(Position(8, 1), Piece("Black", "R", Position(8, 1)));
-    pieces.insert(Position(8, 8), Piece("Black", "R", Position(8, 8)));
+    pieces.insert(Position(8, 5), Piece(false, "K", Position(8, 5)));
+    pieces.insert(Position(8, 4), Piece(false, "Q", Position(8, 4)));
+    pieces.insert(Position(8, 3), Piece(false, "B", Position(8, 3)));
+    pieces.insert(Position(8, 6), Piece(false, "B", Position(8, 6)));
+    pieces.insert(Position(8, 2), Piece(false, "N", Position(8, 2)));
+    pieces.insert(Position(8, 7), Piece(false, "N", Position(8, 7)));
+    pieces.insert(Position(8, 1), Piece(false, "R", Position(8, 1)));
+    pieces.insert(Position(8, 8), Piece(false, "R", Position(8, 8)));
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(7, i+1), Piece("Black", "", Position(7, i+1)));
+        pieces.insert(Position(7, i+1), Piece(false, "", Position(7, i+1)));
     }
 }
 
@@ -65,7 +65,7 @@ void GameManager::parsePgn(QString fileContent)
     QStringList pgnInstructions;
     pgnInstructions = fileContent.split(' ');
 
-    QString color = "White";
+    bool whiteToPlay = true;
 
     QListIterator iterator(pgnInstructions);
     while (iterator.hasNext())
@@ -76,16 +76,8 @@ void GameManager::parsePgn(QString fileContent)
 
         if (!isEndingIndication(pgnInstruction) && !isMoveNumber(pgnInstruction))
         {
-            instanciateMoves(pgnInstruction, color);
-
-            if (color == "White")
-            {
-                color = "Black";
-            }
-            else
-            {
-                color = "White";
-            }
+            instanciateMoves(pgnInstruction, whiteToPlay);
+            whiteToPlay = !whiteToPlay;
         }
 
     }
@@ -113,7 +105,7 @@ bool GameManager::isMoveNumber(QString pgnInstruction)
     return (pgnInstruction.last(1) == ".");
 }
 
-void GameManager::instanciateMoves(QString pgnInstruction, QString color)
+void GameManager::instanciateMoves(QString pgnInstruction, bool whiteToPlay)
 {
     Move newMove;
 
@@ -130,7 +122,7 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
 
     if (firstLetter == 'O')
     {
-        Piece castlingKing = Piece::findPiece("K", color, pieces);
+        Piece castlingKing = Piece::findPiece("K", whiteToPlay, pieces);
         if (pgnInstruction == "O-O-O")
         {
             newMove.setQueensideCastlingKing(castlingKing);
@@ -143,11 +135,11 @@ void GameManager::instanciateMoves(QString pgnInstruction, QString color)
     }
     else if (isValidPieceInput(firstLetter))
     {
-        newMove = Move(Piece::findPiece((QString) firstLetter, color, nextPosition, prerequisite, pieces), nextPosition);
+        newMove = Move(Piece::findPiece((QString) firstLetter, whiteToPlay, nextPosition, prerequisite, pieces), nextPosition);
     }
     else
     {
-        newMove = Move(Piece::findPiece("", color, nextPosition, prerequisite, pieces), nextPosition);
+        newMove = Move(Piece::findPiece("", whiteToPlay, nextPosition, prerequisite, pieces), nextPosition);
     }
 
     if (isCapture(pgnInstruction))

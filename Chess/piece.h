@@ -14,12 +14,12 @@ class Piece
 public:
     Piece();
     Piece(const Piece &piece);
-    Piece(QString color, QString pgnIdentifier, Position position);
+    Piece(bool colorIsWhite, QString pgnIdentifier, Position position);
     ~Piece();
 
     Position position;
 
-    QString getColor();
+    bool isWhite();
     QString getPgnIdentifier();
     QString getIconFileName();
 
@@ -27,14 +27,14 @@ public:
 
     bool matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
 
-    static Piece findPiece(QString pgnIdentifier, QString color, const QMap<Position, Piece> &pieces);
-    static Piece findPiece(QString pgnIdentifier, QString color, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
+    static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const QMap<Position, Piece> &pieces);
+    static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
 
 protected:
 
     bool canGoTo(const Position &targetPosition, const QMap<Position, Piece> &pieces);
 
-    QString color;
+    bool colorIsWhite;
     QString pgnIdentifier;
     QString iconFileName;
 
