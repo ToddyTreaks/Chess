@@ -8,7 +8,7 @@ class KingMovementStrategy : public MovementStrategy
 public:
     KingMovementStrategy();
 
-    bool canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces);
+    bool canGoTo(const Position &position, const Position &targetPosition, const QList<Piece> &pieces);
 };
 
 #endif // KINGMOVEMENTSTRATEGY_H

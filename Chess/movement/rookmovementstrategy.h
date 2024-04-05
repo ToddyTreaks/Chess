@@ -8,11 +8,11 @@ class RookMovementStrategy : public MovementStrategy
 public:
     RookMovementStrategy();
 
-    bool canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces);
+    bool canGoTo(const Position &position, const Position &targetPosition, const QList<Piece> &pieces);
 
 private:
-    bool noBlockingPieceOnColumn(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces);
-    bool noBlockingPieceOnRow(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces);
+    bool noBlockingPieceOnColumn(const Position &position, const Position &targetPosition, const QList<Piece> &pieces);
+    bool noBlockingPieceOnRow(const Position &position, const Position &targetPosition, const QList<Piece> &pieces);
 
 };
 

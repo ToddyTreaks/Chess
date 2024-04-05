@@ -19,20 +19,23 @@ public:
 
     Position position;
 
-    bool isWhite();
-    QString getPgnIdentifier();
-    QString getIconFileName();
+    bool isWhite() const;
+    QString getPgnIdentifier() const;
+    QString getIconFileName() const;
 
     QString toString();
 
-    bool matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
+    bool matchPosition(const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces);
 
-    static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const QMap<Position, Piece> &pieces);
-    static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces);
+    static Piece findPiece(Position position, const QList<Piece> &pieces);
+    static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const QList<Piece> &pieces);
+    static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces);
+
+    bool operator==(const Piece& other) const;
 
 protected:
 
-    bool canGoTo(const Position &targetPosition, const QMap<Position, Piece> &pieces);
+    bool canGoTo(const Position &targetPosition, const QList<Piece> &pieces);
 
     bool colorIsWhite;
     QString pgnIdentifier;

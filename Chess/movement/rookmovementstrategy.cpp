@@ -2,7 +2,7 @@
 
 RookMovementStrategy::RookMovementStrategy() {}
 
-bool RookMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
+bool RookMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QList<Piece> &pieces)
 {
     int x_target = std::abs(targetPosition.column - position.column);
     int y_target = std::abs(targetPosition.row - position.row);
@@ -27,7 +27,7 @@ bool RookMovementStrategy::canGoTo(const Position &position, const Position &tar
     }
 }
 
-bool RookMovementStrategy::noBlockingPieceOnColumn(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
+bool RookMovementStrategy::noBlockingPieceOnColumn(const Position &position, const Position &targetPosition, const QList<Piece> &pieces)
 {
     int increment = (targetPosition.column - position.column) / std::abs(targetPosition.column - position.column);
     for (int i = position.column + 1; i < targetPosition.column; i += increment)
@@ -40,7 +40,7 @@ bool RookMovementStrategy::noBlockingPieceOnColumn(const Position &position, con
     return true;
 }
 
-bool RookMovementStrategy::noBlockingPieceOnRow(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
+bool RookMovementStrategy::noBlockingPieceOnRow(const Position &position, const Position &targetPosition, const QList<Piece> &pieces)
 {
     int increment = (targetPosition.row - position.row) / std::abs(targetPosition.row - position.row);
     for (int i = position.row + 1; i < targetPosition.row; i += increment)

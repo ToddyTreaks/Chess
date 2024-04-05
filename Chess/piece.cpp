@@ -59,42 +59,66 @@ Piece::Piece(bool colorIsWhite, QString pgnIdentifier, Position position)
 
 Piece::~Piece() {}
 
-bool Piece::isWhite()
+bool Piece::isWhite() const
 {
     return colorIsWhite;
 }
 
-QString Piece::getPgnIdentifier()
+QString Piece::getPgnIdentifier() const
 {
     return pgnIdentifier;
 }
 
-QString Piece::getIconFileName()
+QString Piece::getIconFileName() const
 {
     return iconFileName;
 }
 
 QString Piece::toString()
 {
-    return QString("%1, %2").arg(pgnIdentifier).arg(position.toString());
+    QString pieceToString("%1, %2, %3");
+    pieceToString = pieceToString.arg(pgnIdentifier);
+    if (colorIsWhite)
+    {
+        pieceToString = pieceToString.arg("White");
+    }
+    else
+    {
+        pieceToString = pieceToString.arg("Black");
+    }
+    pieceToString = pieceToString.arg(position.toString());
+    return pieceToString;
 }
 
-Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const QMap<Position, Piece> &pieces)
+Piece Piece::findPiece(Position position, const QList<Piece> &pieces)
 {
-    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+    QListIterator iterator(pieces);
+    while (iterator.hasNext())
     {
-        Piece candidate = iterator->second;
-
-        if (candidate.isWhite() == colorIsWhite && candidate.getPgnIdentifier() == pgnIdentifier)
+        Piece piece = iterator.next();
+        if (piece.position == position)
         {
-           return candidate;
+            return piece;
         }
     }
-
-    throw std::out_of_range("Piece not found");
+    throw std::out_of_range("Piece not found !");
 }
 
-Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
+Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const QList<Piece> &pieces)
+{
+    QListIterator iterator(pieces);
+    while (iterator.hasNext())
+    {
+        Piece candidate = iterator.next();
+        if (candidate.isWhite() == colorIsWhite && candidate.getPgnIdentifier() == pgnIdentifier)
+        {
+            return candidate;
+        }
+    }
+    throw std::out_of_range("Piece not found.");
+}
+
+Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces)
 {
     if (pieces.isEmpty())
     {
@@ -102,20 +126,21 @@ Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const Position 
     }
 
     QList<Piece> candidates;
-    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+    QListIterator iterator(pieces);
+    while (iterator.hasNext())
     {
-        Piece actualBoardPiece = iterator->second;
+        Piece actualBoardPiece = iterator.next();
         if (actualBoardPiece.isWhite() == colorIsWhite && actualBoardPiece.getPgnIdentifier() == pgnIdentifier)
         {
             candidates.append(actualBoardPiece);
         }
-
     }
 
-    QListIterator iterator(candidates);
+    iterator = QListIterator(candidates);
     while (iterator.hasNext())
     {
         Piece candidate = iterator.next();
+        qDebug() << candidate.toString();
         if (candidate.matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;
@@ -126,7 +151,7 @@ Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const Position 
 
 }
 
-bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, const QMap<Position, Piece> &pieces)
+bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces)
 {
     if (prerequisite.row != 0 && prerequisite.row != position.row)
     {
@@ -137,11 +162,12 @@ bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, c
     {
         return false;
     }
+    qDebug() << toString();
 
     return canGoTo(nextPosition, pieces);
 }
 
-bool Piece::canGoTo(const Position &nextPosition, const QMap<Position, Piece> &pieces)
+bool Piece::canGoTo(const Position &nextPosition, const QList<Piece> &pieces)
 {
     if (nextPosition == position)
     {
@@ -153,4 +179,12 @@ bool Piece::canGoTo(const Position &nextPosition, const QMap<Position, Piece> &p
         return false;
     }
     return movementStrategy->canGoTo(position, nextPosition, pieces);
+}
+
+bool Piece::operator==(const Piece& other) const
+{
+    bool sameColor = (other.isWhite() == colorIsWhite);
+    bool samePosition = (other.position == position);
+    bool samePieceType = (other.getPgnIdentifier() == pgnIdentifier);
+    return sameColor && samePosition && samePieceType;
 }

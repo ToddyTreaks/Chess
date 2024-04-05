@@ -25,19 +25,19 @@ public:
     Piece getPiecePromotedTo();
 
     bool isCastlingKingside();
-    bool isCastlingQueenside();
+    bool isCastlingQueenside() const;
 
     void setCapturedPiece(Piece capturedPiece);
     void setPiecePromotedTo(QString piecePromotedToIdentifier);
     void setKingsideCastlingKing(Piece castlingKing);
     void setQueensideCastlingKing(Piece castlingKing);
 
-    void castleKingside(QMap<Position, Piece> &pieces);
-    void castleQueenside(QMap<Position, Piece> &pieces);
-    void undoCastleKingside(QMap<Position, Piece> &pieces);
-    void undoCastleQueenside(QMap<Position, Piece> &pieces);
-    bool canCastleKingside(const QMap<Position, Piece> &pieces);
-    bool canCastleQueenside(const QMap<Position, Piece> &pieces);
+    void castleKingside(QList<Piece> &pieces);
+    void castleQueenside(QList<Piece> &pieces);
+    void undoCastleKingside(QList<Piece> &pieces);
+    void undoCastleQueenside(QList<Piece> &pieces);
+    bool canCastleKingside(const QList<Piece> &pieces);
+    bool canCastleQueenside(const QList<Piece> &pieces);
 
 private:
     Piece piece;
@@ -50,6 +50,8 @@ private:
     Piece piecePromotedTo;
     bool castlingKingside;
     bool castlingQueenside;
+
+    void initializeAttributes();
 };
 
 #endif // MOVE_H

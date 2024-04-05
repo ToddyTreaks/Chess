@@ -8,7 +8,7 @@ class PawnMovementStrategy : public MovementStrategy
 public:
     PawnMovementStrategy();
 
-    bool canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces);
+    bool canGoTo(const Position &position, const Position &targetPosition, const QList<Piece> &pieces);
 };
 
 #endif // PAWNMOVEMENTSTRATEGY_H

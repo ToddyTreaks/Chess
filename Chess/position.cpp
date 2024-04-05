@@ -18,18 +18,32 @@ QString Position::toString() const
     return QString("%1%2").arg(columnLetter).arg(row);
 }
 
-bool Position::isEmpty(const QMap<Position, Piece> &pieces) const
+bool Position::isEmpty(const QList<Piece> &pieces) const
 {
-    return !pieces.contains(*this);
+    QListIterator iterator(pieces);
+    while(iterator.hasNext())
+    {
+        Piece piece = iterator.next();
+        if (piece.position == *this)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
-bool Position::isEmpty(bool colorIsWhite, const QMap<Position, Piece> &pieces) const
+bool Position::isEmpty(bool colorIsWhite, const QList<Piece> &pieces) const
 {
-    if (!pieces.contains(*this))
+    QListIterator iterator(pieces);
+    while(iterator.hasNext())
     {
-        return true;
+        Piece piece = iterator.next();
+        if (piece.position == *this)
+        {
+            return (piece.isWhite() != colorIsWhite);
+        }
     }
-    return !(pieces.value(*this).isWhite() == colorIsWhite);
+    return true;
 }
 
 bool Position::operator<(const Position& other) const

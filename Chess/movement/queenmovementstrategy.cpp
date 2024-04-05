@@ -5,7 +5,7 @@
 
 QueenMovementStrategy::QueenMovementStrategy() {}
 
-bool QueenMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
+bool QueenMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QList<Piece> &pieces)
 {
     BishopMovementStrategy bishopMovementStrategy;
     RookMovementStrategy rookMovementStrategy;

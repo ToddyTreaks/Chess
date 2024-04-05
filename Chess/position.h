@@ -15,8 +15,8 @@ public:
     int column;
 
     QString toString() const;
-    bool isEmpty(const QMap<Position, Piece> &pieces) const;
-    bool isEmpty(bool colorIsWhite, const QMap<Position, Piece> &pieces) const;
+    bool isEmpty(const QList<Piece> &pieces) const;
+    bool isEmpty(bool colorIsWhite, const QList<Piece> &pieces) const;
 
     bool operator<(const Position& other) const;
     bool operator==(const Position& other) const;

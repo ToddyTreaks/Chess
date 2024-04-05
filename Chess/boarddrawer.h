@@ -13,7 +13,7 @@ public:
     BoardDrawer();
 
     void drawSquares(QGraphicsScene* scene);
-    void drawPieces(QGraphicsScene* scene, const QMap<Position, Piece> &pieces);
+    void drawPieces(QGraphicsScene* scene, const QList<Piece> &pieces);
 
 private:
     QBrush lightBrush;

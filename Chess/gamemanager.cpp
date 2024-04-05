@@ -30,32 +30,32 @@ GameManager::GameManager(QFile file)
 
 void GameManager::createStartingPieces()
 {
-    pieces.insert(Position(1, 5), Piece(true, "K", Position(1, 5)));
-    pieces.insert(Position(1, 4), Piece(true, "Q", Position(1, 4)));
-    pieces.insert(Position(1, 3), Piece(true, "B", Position(1, 3)));
-    pieces.insert(Position(1, 6), Piece(true, "B", Position(1, 6)));
-    pieces.insert(Position(1, 2), Piece(true, "N", Position(1, 2)));
-    pieces.insert(Position(1, 7), Piece(true, "N", Position(1, 7)));
-    pieces.insert(Position(1, 1), Piece(true, "R", Position(1, 1)));
-    pieces.insert(Position(1, 8), Piece(true, "R", Position(1, 8)));
+    pieces.append(Piece(true, "K", Position(1, 5)));
+    pieces.append(Piece(true, "Q", Position(1, 4)));
+    pieces.append(Piece(true, "B", Position(1, 3)));
+    pieces.append(Piece(true, "B", Position(1, 6)));
+    pieces.append(Piece(true, "N", Position(1, 2)));
+    pieces.append(Piece(true, "N", Position(1, 7)));
+    pieces.append(Piece(true, "R", Position(1, 1)));
+    pieces.append(Piece(true, "R", Position(1, 8)));
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(2, i+1), Piece(true, "", Position(2, i+1)));
+        pieces.append(Piece(true, "", Position(2, i+1)));
     }
 
-    pieces.insert(Position(8, 5), Piece(false, "K", Position(8, 5)));
-    pieces.insert(Position(8, 4), Piece(false, "Q", Position(8, 4)));
-    pieces.insert(Position(8, 3), Piece(false, "B", Position(8, 3)));
-    pieces.insert(Position(8, 6), Piece(false, "B", Position(8, 6)));
-    pieces.insert(Position(8, 2), Piece(false, "N", Position(8, 2)));
-    pieces.insert(Position(8, 7), Piece(false, "N", Position(8, 7)));
-    pieces.insert(Position(8, 1), Piece(false, "R", Position(8, 1)));
-    pieces.insert(Position(8, 8), Piece(false, "R", Position(8, 8)));
+    pieces.append(Piece(false, "K", Position(8, 5)));
+    pieces.append(Piece(false, "Q", Position(8, 4)));
+    pieces.append(Piece(false, "B", Position(8, 3)));
+    pieces.append(Piece(false, "B", Position(8, 6)));
+    pieces.append(Piece(false, "N", Position(8, 2)));
+    pieces.append(Piece(false, "N", Position(8, 7)));
+    pieces.append(Piece(false, "R", Position(8, 1)));
+    pieces.append(Piece(false, "R", Position(8, 8)));
 
     for (int i=0; i<8; i++)
     {
-        pieces.insert(Position(7, i+1), Piece(false, "", Position(7, i+1)));
+        pieces.append(Piece(false, "", Position(7, i+1)));
     }
 }
 
@@ -78,6 +78,15 @@ void GameManager::parsePgn(QString fileContent)
         {
             instanciateMoves(pgnInstruction, whiteToPlay);
             whiteToPlay = !whiteToPlay;
+        }
+
+        qDebug() << "--- board ---" << pgnInstruction;
+
+        QListIterator printIterator(pieces);
+        while (printIterator.hasNext())
+        {
+            Piece piece = printIterator.next();
+            qDebug() << piece.toString();
         }
 
     }
@@ -144,13 +153,18 @@ void GameManager::instanciateMoves(QString pgnInstruction, bool whiteToPlay)
 
     if (isCapture(pgnInstruction))
     {
-        newMove.setCapturedPiece(pieces.value(nextPosition));
+        newMove.setCapturedPiece(Piece::findPiece(nextPosition, pieces));
     }
 
     if (isPromotion(pgnInstruction))
     {
         newMove.setPiecePromotedTo(getPiecePromotedToPgnIdentifier(pgnInstruction));
     }
+
+    // tkt
+    // newMove.isCastlingQueenside();
+    // qDebug() << newMove.isCastlingQueenside();
+    // qDebug() << newMove.isCastlingKingside();
 
     nextMoves.append(newMove);
 
@@ -274,7 +288,7 @@ QString GameManager::getPiecePromotedToPgnIdentifier(QString pgnInstruction)
     return pgnInstruction[1];
 }
 
-const QMap<Position, Piece> GameManager::getPieces()
+const QList<Piece> GameManager::getPieces()
 {
     return pieces;
 }
@@ -292,6 +306,7 @@ void GameManager::nextMove()
 
     if (nextMove.isCastlingKingside())
     {
+        qDebug() << "here kingside";
         nextMove.castleKingside(pieces);
         movesDone.prepend(nextMove);
         return;
@@ -299,16 +314,9 @@ void GameManager::nextMove()
 
     if (nextMove.isCastlingQueenside())
     {
+        qDebug() << "here queenside";
         nextMove.castleQueenside(pieces);
         movesDone.prepend(nextMove);
-        return;
-    }
-
-    Position previousPosition = piece.position;
-
-    if (!pieces.contains(previousPosition))
-    {
-        //TODO error
         return;
     }
 
@@ -321,12 +329,13 @@ void GameManager::nextMove()
 
     if (nextMove.isCapture())
     {
-        takenPieces.append(pieces.value(nextMove.getNextPosition()));
+        pieces.removeAll(nextMove.getCapturedPiece());
+        takenPieces.append(nextMove.getCapturedPiece());
     }
 
+    pieces.removeAll(piece);
     piece.position = nextMove.getNextPosition();
-    pieces.remove(previousPosition);
-    pieces.insert(nextMove.getNextPosition(), piece);
+    pieces.append(piece);
 
     movesDone.prepend(nextMove);
 
@@ -360,20 +369,14 @@ void GameManager::previousMove()
 
     Position currentPosition = previousMove.getNextPosition();
 
-    if (!pieces.contains(currentPosition))
-    {
-        //TODO error
-        return;
-    }
-
+    pieces.removeAll(piece);
     piece.position = previousMove.getPreviousPosition();
-    pieces.remove(currentPosition);
-    pieces.insert(previousMove.getPreviousPosition(), piece);
+    pieces.append(piece);
 
     if (previousMove.isCapture())
     {
         previousMove.getCapturedPiece().position = currentPosition;
-        pieces.insert(currentPosition, previousMove.getCapturedPiece());
+        pieces.append(previousMove.getCapturedPiece());
     }
 
     nextMoves.prepend(previousMove);

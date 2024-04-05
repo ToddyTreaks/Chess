@@ -9,7 +9,7 @@ public:
     MovementStrategy();
     ~MovementStrategy();
 
-    virtual bool canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces) = 0;
+    virtual bool canGoTo(const Position &position, const Position &targetPosition, const QList<Piece> &pieces) = 0;
 };
 
 #endif // MOVEMENTSTRATEGY_H

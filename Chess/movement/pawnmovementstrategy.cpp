@@ -2,19 +2,44 @@
 
 PawnMovementStrategy::PawnMovementStrategy() {}
 
-bool PawnMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QMap<Position, Piece> &pieces)
+bool PawnMovementStrategy::canGoTo(const Position &position, const Position &targetPosition, const QList<Piece> &pieces)
 {
     int x_target = std::abs(targetPosition.column - position.column);
-    int y_target = std::abs(targetPosition.row - position.row);
+    int y_target = targetPosition.row - position.row;
 
-    if (y_target == 1)
-        // cas de la prise
-        if (x_target == 1 && pieces.contains(targetPosition)){
-            return true;
-        }
-        // cas ou il n'y a rien devant
-        if (x_target == 0 && !(pieces.contains(targetPosition))){
-            return true;
-        }
+    Piece piece = Piece::findPiece(position, pieces);
+    if (!piece.isWhite())
+    {
+        y_target = -y_target;
+    }
+
+    if (x_target > 1)
+    {
+        return false;
+    }
+
+    // capture case
+    if (x_target == 1)
+    {
+        return (y_target == 1) && !targetPosition.isEmpty(!piece.isWhite(), pieces);
+    }
+
+    if (y_target < 0 || y_target > 2)
+    {
+        return false;
+    }
+
+    // starting position case
+    if (y_target == 2)
+    {
+        return (position.row == 2 || position.row == 7);
+    }
+
+    // no capture case
+    if (x_target == 0)
+    {
+        return true;
+    }
+
     return false;
 }

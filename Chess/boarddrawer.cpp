@@ -28,13 +28,15 @@ void BoardDrawer::drawSquares(QGraphicsScene* scene)
     }
 }
 
-void BoardDrawer::drawPieces(QGraphicsScene* scene, const QMap<Position, Piece> &pieces)
+void BoardDrawer::drawPieces(QGraphicsScene* scene, const QList<Piece> &pieces)
 {
     scene->clear();
     drawSquares(scene);
-    for (auto iterator = pieces.keyValueBegin(); iterator != pieces.keyValueEnd(); ++iterator)
+
+    QListIterator iterator(pieces);
+    while (iterator.hasNext())
     {
-        Piece piece = iterator->second;
+        Piece piece = iterator.next();
         drawPiece(piece, scene);
     }
 }

@@ -2,7 +2,10 @@
 
 #include <QDebug>
 
-Move::Move() {}
+Move::Move()
+{
+    initializeAttributes();
+}
 
 Move::Move(Piece piece, Position nextPosition)
     : Move(piece, piece.position, nextPosition)
@@ -10,6 +13,11 @@ Move::Move(Piece piece, Position nextPosition)
 
 Move::Move(Piece piece, Position previousPosition, Position nextPosition)
     : piece(piece), previousPosition(previousPosition), nextPosition(nextPosition)
+{
+    initializeAttributes();
+}
+
+void Move::initializeAttributes()
 {
     capture = false;
     promotion = false;
@@ -67,14 +75,14 @@ bool Move::isCastlingKingside()
     return castlingKingside;
 }
 
-bool Move::isCastlingQueenside()
+bool Move::isCastlingQueenside() const
 {
     return castlingQueenside;
 }
 
-void Move::setCapturedPiece(Piece piece)
+void Move::setCapturedPiece(Piece pieceCaptured)
 {
-    capturedPiece = Piece(piece);
+    capturedPiece = Piece(pieceCaptured);
     capture = true;
 }
 
@@ -96,7 +104,7 @@ void Move::setQueensideCastlingKing(Piece castlingKing)
     castlingQueenside = true;
 }
 
-void Move::castleKingside(QMap<Position, Piece> &pieces)
+void Move::castleKingside(QList<Piece> &pieces)
 {
     if (!canCastleKingside(pieces))
     {
@@ -111,22 +119,22 @@ void Move::castleKingside(QMap<Position, Piece> &pieces)
     {
         rookPosition.row = 8;
     }
-    rook = pieces.value(rookPosition);
+    rook = Piece::findPiece(rookPosition, pieces);
 
     Position kingNextPosition(piece.position.row, piece.position.column + 2);
     Position rookNextPosition(rookPosition.row, rookPosition.column - 2);
 
-    pieces.remove(piece.position);
-    pieces.remove(rookPosition);
+    pieces.removeAll(piece);
+    pieces.removeAll(rook);
 
     piece.position = kingNextPosition;
     rook.position = rookNextPosition;
-    pieces.insert(kingNextPosition, piece);
-    pieces.insert(rookNextPosition, rook);
+    pieces.append(piece);
+    pieces.append(rook);
 
 }
 
-void Move::castleQueenside(QMap<Position, Piece> &pieces)
+void Move::castleQueenside(QList<Piece> &pieces)
 {
     if (!canCastleQueenside(pieces))
     {
@@ -141,22 +149,22 @@ void Move::castleQueenside(QMap<Position, Piece> &pieces)
     {
         rookPosition.row = 8;
     }
-    rook = pieces.value(rookPosition);
+    rook = Piece::findPiece(rookPosition, pieces);
 
     Position kingNextPosition(piece.position.row, piece.position.column - 2);
     Position rookNextPosition(rookPosition.row, rookPosition.column + 3);
 
-    pieces.remove(piece.position);
-    pieces.remove(rookPosition);
+    pieces.removeAll(piece);
+    pieces.removeAll(rook);
 
     piece.position = kingNextPosition;
     rook.position = rookNextPosition;
-    pieces.insert(kingNextPosition, piece);
-    pieces.insert(rookNextPosition, rook);
+    pieces.append(piece);
+    pieces.append(rook);
 
 }
 
-void Move::undoCastleKingside(QMap<Position, Piece> &pieces)
+void Move::undoCastleKingside(QList<Piece> &pieces)
 {
     Piece rook;
     Position rookPosition(1, 6);
@@ -165,22 +173,22 @@ void Move::undoCastleKingside(QMap<Position, Piece> &pieces)
     {
         rookPosition.row = 8;
     }
-    rook = pieces.value(rookPosition);
+    rook = Piece::findPiece(rookPosition, pieces);
 
     Position kingPreviousPosition(piece.position.row, piece.position.column - 2);
     Position rookPreviousPosition(rookPosition.row, rookPosition.column + 2);
 
-    pieces.remove(piece.position);
-    pieces.remove(rookPosition);
+    pieces.removeAll(piece);
+    pieces.removeAll(rook);
 
     piece.position = kingPreviousPosition;
     rook.position = rookPreviousPosition;
-    pieces.insert(kingPreviousPosition, piece);
-    pieces.insert(rookPreviousPosition, rook);
+    pieces.append(piece);
+    pieces.append(rook);
 
 }
 
-void Move::undoCastleQueenside(QMap<Position, Piece> &pieces)
+void Move::undoCastleQueenside(QList<Piece> &pieces)
 {
     Piece rook;
     Position rookPosition(1, 4);
@@ -189,28 +197,28 @@ void Move::undoCastleQueenside(QMap<Position, Piece> &pieces)
     {
         rookPosition.row = 8;
     }
-    rook = pieces.value(rookPosition);
+    rook = Piece::findPiece(rookPosition, pieces);
 
     Position kingPreviousPosition(piece.position.row, piece.position.column + 2);
     Position rookPreviousPosition(rookPosition.row, rookPosition.column - 3);
 
-    pieces.remove(piece.position);
-    pieces.remove(rookPosition);
+    pieces.removeAll(piece);
+    pieces.removeAll(rook);
 
     piece.position = kingPreviousPosition;
     rook.position = rookPreviousPosition;
-    pieces.insert(kingPreviousPosition, piece);
-    pieces.insert(rookPreviousPosition, rook);
+    pieces.append(piece);
+    pieces.append(rook);
 
 }
 
-bool Move::canCastleKingside(const QMap<Position, Piece> &pieces)
+bool Move::canCastleKingside(const QList<Piece> &pieces)
 {
     // TODO
     return true;
 }
 
-bool Move::canCastleQueenside(const QMap<Position, Piece> &pieces)
+bool Move::canCastleQueenside(const QList<Piece> &pieces)
 {
     // TODO
     return true;
