@@ -11,12 +11,21 @@
 class GameManager
 {
 public:
+    /*
+    * Constructors
+    */
     GameManager();
     GameManager(QString fileName);
     GameManager(QFile file);
-
+    
+    /*
+    * Attributes
+    */
     const QMap<Position, Piece> getPieces();
 
+    /*
+    * 
+    */
     void nextMove();
     void previousMove();
 
