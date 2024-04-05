@@ -10,9 +10,23 @@
 class BoardDrawer
 {
 public:
+
+    /*
+    * Constructors
+    */
     BoardDrawer();
 
+    /*
+    * @param scene the scene to draw the squares on
+    * @note draw the squares of the board
+    */
     void drawSquares(QGraphicsScene* scene);
+
+    /*
+    * @param scene the scene to draw the pieces on
+    * @param QMap<Position, Piece>: a map of the pieces on the board that use the position as key
+    * @note draw the pieces on the board
+    */
     void drawPieces(QGraphicsScene* scene, const QMap<Position, Piece> &pieces);
 
 private:

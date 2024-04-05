@@ -9,9 +9,20 @@
 class BoardSquare : QGraphicsRectItem
 {
 public:
+
+    /*
+    * Constructors
+    */
     BoardSquare();
+
+    /*
+    * @set the coordinates of the square
+    */
     void setCoordinates(int x, int y);
 
+    /*
+    * @note update the color of tools to match the square color
+    */
     void updateTools();
 
 private:

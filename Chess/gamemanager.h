@@ -24,14 +24,28 @@ public:
     const QMap<Position, Piece> getPieces();
 
     /*
-    * 
+    * @note goes to the next move in the list
     */
     void nextMove();
+
+    /*
+    * @note goes to the previous move in the list
+    */
     void previousMove();
 
+    /*
+    * @return true if there is a next move, false otherwise
+    */
     bool hasNextMove();
+
+    /*
+    * @return true if there is a previous move, false otherwise
+    */
     bool hasPreviousMove();
 
+    /*
+    * @note transform the move list into a PGN file
+    */
     void toPgn(QFile file);
 
 private:
