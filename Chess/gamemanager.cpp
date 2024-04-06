@@ -24,7 +24,6 @@ GameManager::GameManager(QFile file)
     parsePgn(fileContent);
     while (hasPreviousMove())
     {
-        qDebug() << "previousmove()";
         previousMove();
     }
 }
@@ -293,93 +292,28 @@ void GameManager::nextMove()
 {
     if (nextMoves.isEmpty())
     {
-        //TODO error
+        // TODO error
         return;
     }
 
     Move nextMove = nextMoves.takeFirst();
-    Piece piece = nextMove.getPiece();
-
-    if (nextMove.isCastlingKingside())
-    {
-        qDebug() << "here kingside";
-        nextMove.castleKingside(pieces);
-        movesDone.prepend(nextMove);
-        return;
-    }
-
-    if (nextMove.isCastlingQueenside())
-    {
-        qDebug() << "here queenside";
-        nextMove.castleQueenside(pieces);
-        movesDone.prepend(nextMove);
-        return;
-    }
-
-    if (nextMove.isCapture())
-    {
-        pieces.removeAll(nextMove.getCapturedPiece());
-    }
-
-    pieces.removeAll(piece);
-    piece.position = nextMove.getNextPosition();
-
-    if (nextMove.isPromotion())
-    {
-        piece = nextMove.getPiecePromotedTo();
-    }
-
-    pieces.append(piece);
+    nextMove.applyMove(pieces);
 
     movesDone.prepend(nextMove);
-
-    return;
 }
 
 void GameManager::previousMove()
 {
     if (movesDone.isEmpty())
     {
-        //TODO error
+        // TODO error
         return;
     }
 
     Move previousMove = movesDone.takeFirst();
-    Piece piece = previousMove.getPiece();
-
-    if (previousMove.isCastlingKingside())
-    {
-        previousMove.undoCastleKingside(pieces);
-        nextMoves.prepend(previousMove);
-        return;
-    }
-
-    if (previousMove.isCastlingQueenside())
-    {
-        previousMove.undoCastleQueenside(pieces);
-        nextMoves.prepend(previousMove);
-        return;
-    }
-
-    if (previousMove.isPromotion())
-    {
-        pieces.removeAll(previousMove.getPiecePromotedTo());
-    }
-
-    if (previousMove.isCapture())
-    {
-        pieces.append(previousMove.getCapturedPiece());
-    }
-
-    piece.position = previousMove.getNextPosition();
-    pieces.removeAll(piece);
-
-    piece.position = previousMove.getPreviousPosition();
-    pieces.append(piece);
+    previousMove.undoMove(pieces);
 
     nextMoves.prepend(previousMove);
-
-    return;
 }
 
 bool GameManager::hasNextMove()

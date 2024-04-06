@@ -32,12 +32,8 @@ public:
     void setKingsideCastlingKing(Piece castlingKing);
     void setQueensideCastlingKing(Piece castlingKing);
 
-    void castleKingside(QList<Piece> &pieces);
-    void castleQueenside(QList<Piece> &pieces);
-    void undoCastleKingside(QList<Piece> &pieces);
-    void undoCastleQueenside(QList<Piece> &pieces);
-    bool canCastleKingside(const QList<Piece> &pieces);
-    bool canCastleQueenside(const QList<Piece> &pieces);
+    void applyMove(QList<Piece> &pieces);
+    void undoMove(QList<Piece> &pieces);
 
 private:
     Piece piece;
@@ -52,6 +48,13 @@ private:
     bool castlingQueenside;
 
     void initializeAttributes();
+
+    void castleKingside(QList<Piece> &pieces);
+    void castleQueenside(QList<Piece> &pieces);
+    void undoCastleKingside(QList<Piece> &pieces);
+    void undoCastleQueenside(QList<Piece> &pieces);
+    bool canCastleKingside(const QList<Piece> &pieces);
+    bool canCastleQueenside(const QList<Piece> &pieces);
 };
 
 #endif // MOVE_H

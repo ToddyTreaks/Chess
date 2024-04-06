@@ -104,6 +104,69 @@ void Move::setQueensideCastlingKing(Piece castlingKing)
     castlingQueenside = true;
 }
 
+void Move::applyMove(QList<Piece> &pieces)
+{
+    if (castlingKingside)
+    {
+        castleKingside(pieces);
+        return;
+    }
+
+    if (castlingQueenside)
+    {
+        castleQueenside(pieces);
+        return;
+    }
+
+    if (capture)
+    {
+        pieces.removeAll(capturedPiece);
+    }
+
+    pieces.removeAll(piece);
+
+    Piece pieceAfterMove(piece);
+    pieceAfterMove.position = nextPosition;
+
+    if (promotion)
+    {
+        pieceAfterMove= piecePromotedTo;
+    }
+
+    pieces.append(pieceAfterMove);
+}
+
+void Move::undoMove(QList<Piece> &pieces)
+{
+    if (castlingKingside)
+    {
+        undoCastleKingside(pieces);
+        return;
+    }
+
+    if (castlingQueenside)
+    {
+        undoCastleQueenside(pieces);
+        return;
+    }
+
+    if (promotion)
+    {
+        pieces.removeAll(piecePromotedTo);
+    }
+
+    if (capture)
+    {
+        pieces.append(capturedPiece);
+    }
+
+    Piece pieceAfterMove(piece);
+    pieceAfterMove.position = nextPosition;
+    pieces.removeAll(pieceAfterMove);
+
+    pieces.append(piece);
+}
+
 void Move::castleKingside(QList<Piece> &pieces)
 {
     if (!canCastleKingside(pieces))
