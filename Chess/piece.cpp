@@ -140,7 +140,6 @@ Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const Position 
     while (iterator.hasNext())
     {
         Piece candidate = iterator.next();
-        qDebug() << candidate.toString();
         if (candidate.matchPosition(nextPosition, prerequisite, pieces))
         {
             return candidate;
@@ -162,7 +161,6 @@ bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, c
     {
         return false;
     }
-    qDebug() << toString();
 
     return canGoTo(nextPosition, pieces);
 }

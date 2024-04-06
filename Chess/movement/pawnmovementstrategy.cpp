@@ -38,7 +38,7 @@ bool PawnMovementStrategy::canGoTo(const Position &position, const Position &tar
     // no capture case
     if (x_target == 0)
     {
-        return true;
+        return targetPosition.isEmpty(pieces);
     }
 
     return false;

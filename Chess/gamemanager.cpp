@@ -161,11 +161,6 @@ void GameManager::instanciateMoves(QString pgnInstruction, bool whiteToPlay)
         newMove.setPiecePromotedTo(getPiecePromotedToPgnIdentifier(pgnInstruction));
     }
 
-    // tkt
-    // newMove.isCastlingQueenside();
-    // qDebug() << newMove.isCastlingQueenside();
-    // qDebug() << newMove.isCastlingKingside();
-
     nextMoves.append(newMove);
 
     nextMove();
@@ -320,13 +315,6 @@ void GameManager::nextMove()
         return;
     }
 
-    if (nextMove.isPromotion())
-    {
-        piece.position = nextMove.getNextPosition();
-        takenPieces.append(piece);
-        piece = nextMove.getPiecePromotedTo();
-    }
-
     if (nextMove.isCapture())
     {
         pieces.removeAll(nextMove.getCapturedPiece());
@@ -335,6 +323,12 @@ void GameManager::nextMove()
 
     pieces.removeAll(piece);
     piece.position = nextMove.getNextPosition();
+
+    if (nextMove.isPromotion())
+    {
+        piece = nextMove.getPiecePromotedTo();
+    }
+
     pieces.append(piece);
 
     movesDone.prepend(nextMove);
@@ -367,17 +361,21 @@ void GameManager::previousMove()
         return;
     }
 
-    Position currentPosition = previousMove.getNextPosition();
-
-    pieces.removeAll(piece);
-    piece.position = previousMove.getPreviousPosition();
-    pieces.append(piece);
+    if (previousMove.isPromotion())
+    {
+        pieces.removeAll(previousMove.getPiecePromotedTo());
+    }
 
     if (previousMove.isCapture())
     {
-        previousMove.getCapturedPiece().position = currentPosition;
         pieces.append(previousMove.getCapturedPiece());
     }
+
+    piece.position = previousMove.getNextPosition();
+    pieces.removeAll(piece);
+
+    piece.position = previousMove.getPreviousPosition();
+    pieces.append(piece);
 
     nextMoves.prepend(previousMove);
 
