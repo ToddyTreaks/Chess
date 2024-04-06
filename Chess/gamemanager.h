@@ -29,7 +29,6 @@ private:
     QList<Move> nextMoves;
     QList<Move> movesDone;
     QList<Piece> pieces;
-    QList<Piece> takenPieces;
 
     const unsigned int MAX_PGN_CHARACTERS = 32768;
 

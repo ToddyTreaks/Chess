@@ -13,6 +13,7 @@ GameManager::GameManager(QFile file)
 {
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
+        // TODO error
         return;
     }
 
@@ -318,7 +319,6 @@ void GameManager::nextMove()
     if (nextMove.isCapture())
     {
         pieces.removeAll(nextMove.getCapturedPiece());
-        takenPieces.append(nextMove.getCapturedPiece());
     }
 
     pieces.removeAll(piece);
