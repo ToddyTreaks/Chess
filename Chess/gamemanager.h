@@ -1,8 +1,6 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
-#include <QString>
-#include <QFile>
 #include <QList>
 
 #include "move.h"
@@ -13,18 +11,18 @@ class GameManager
 {
 public:
     GameManager();
-    GameManager(QString fileName);
+    GameManager(const QString &fileName);
     GameManager(QFile file);
 
-    const QList<Piece> getPieces();
+    const QList<Piece> getPieces() const;
 
     void nextMove();
     void previousMove();
 
-    bool hasNextMove();
-    bool hasPreviousMove();
+    bool hasNextMove() const;
+    bool hasPreviousMove() const;
 
-    void toPgn(QFile file);
+    void toPgn(QFile file) const;
 
 private:
     QList<Move> nextMoves;

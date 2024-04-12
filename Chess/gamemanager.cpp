@@ -1,10 +1,8 @@
 #include "gamemanager.h"
 
-#include <QDebug>
-
 GameManager::GameManager() {}
 
-GameManager::GameManager(QString fileName)
+GameManager::GameManager(const QString &fileName)
     : GameManager(QFile(fileName))
 {}
 
@@ -15,7 +13,7 @@ GameManager::GameManager(QFile file)
     pieces = Piece::createStartingPieces();
 }
 
-const QList<Piece> GameManager::getPieces()
+const QList<Piece> GameManager::getPieces() const
 {
     return pieces;
 }
@@ -48,12 +46,12 @@ void GameManager::previousMove()
     nextMoves.prepend(previousMove);
 }
 
-bool GameManager::hasNextMove()
+bool GameManager::hasNextMove() const
 {
     return !nextMoves.isEmpty();
 }
 
-bool GameManager::hasPreviousMove()
+bool GameManager::hasPreviousMove() const
 {
     return !movesDone.isEmpty();
 }
