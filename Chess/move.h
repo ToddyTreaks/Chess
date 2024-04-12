@@ -10,21 +10,21 @@ class Move
 {
 public:
     Move();
-    Move(Piece piece, Position nextPosition);
-    Move(Piece piece, Position previousPosition, Position nextPosition);
+    Move(const Piece &piece, const Position &nextPosition);
+    Move(const Piece &piece, const Position &previousPosition, const Position &nextPosition);
 
-    QString toString();
+    QString toString() const;
 
-    Piece getPiece();
-    Position getPreviousPosition();
-    Position getNextPosition();
+    Piece getPiece() const;
+    Position getPreviousPosition() const;
+    Position getNextPosition() const;
 
-    bool isCapture();
-    Piece getCapturedPiece();
-    bool isPromotion();
-    Piece getPiecePromotedTo();
+    bool isCapture() const;
+    Piece getCapturedPiece() const;
+    bool isPromotion() const;
+    Piece getPiecePromotedTo() const;
 
-    bool isCastlingKingside();
+    bool isCastlingKingside() const;
     bool isCastlingQueenside() const;
 
     void setCapturedPiece(Piece capturedPiece);
@@ -32,8 +32,8 @@ public:
     void setKingsideCastlingKing(Piece castlingKing);
     void setQueensideCastlingKing(Piece castlingKing);
 
-    void applyMove(QList<Piece> &pieces);
-    void undoMove(QList<Piece> &pieces);
+    void applyMove(QList<Piece> &pieces) const;
+    void undoMove(QList<Piece> &pieces) const;
 
 private:
     Piece piece;
@@ -49,12 +49,12 @@ private:
 
     void initializeAttributes();
 
-    void castleKingside(QList<Piece> &pieces);
-    void castleQueenside(QList<Piece> &pieces);
-    void undoCastleKingside(QList<Piece> &pieces);
-    void undoCastleQueenside(QList<Piece> &pieces);
-    bool canCastleKingside(const QList<Piece> &pieces);
-    bool canCastleQueenside(const QList<Piece> &pieces);
+    void castleKingside(QList<Piece> &pieces) const;
+    void castleQueenside(QList<Piece> &pieces) const;
+    void undoCastleKingside(QList<Piece> &pieces) const;
+    void undoCastleQueenside(QList<Piece> &pieces) const;
+    bool canCastleKingside(const QList<Piece> &pieces) const;
+    bool canCastleQueenside(const QList<Piece> &pieces) const;
 };
 
 #endif // MOVE_H

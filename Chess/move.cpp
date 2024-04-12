@@ -1,17 +1,15 @@
 #include "move.h"
 
-#include <QDebug>
-
 Move::Move()
 {
     initializeAttributes();
 }
 
-Move::Move(Piece piece, Position nextPosition)
+Move::Move(const Piece &piece, const Position &nextPosition)
     : Move(piece, piece.position, nextPosition)
 {}
 
-Move::Move(Piece piece, Position previousPosition, Position nextPosition)
+Move::Move(const Piece &piece, const Position &previousPosition, const Position &nextPosition)
     : piece(piece), previousPosition(previousPosition), nextPosition(nextPosition)
 {
     initializeAttributes();
@@ -25,7 +23,7 @@ void Move::initializeAttributes()
     castlingQueenside = false;
 }
 
-QString Move::toString()
+QString Move::toString() const
 {
     QString moveToString;
     moveToString = "piece : %1, position : %2, targetPosition : %3";
@@ -35,42 +33,42 @@ QString Move::toString()
     return moveToString;
 }
 
-Piece Move::getPiece()
+Piece Move::getPiece() const
 {
     return piece;
 }
 
-Position Move::getPreviousPosition()
+Position Move::getPreviousPosition() const
 {
     return previousPosition;
 }
 
-Position Move::getNextPosition()
+Position Move::getNextPosition() const
 {
     return nextPosition;
 }
 
-bool Move::isCapture()
+bool Move::isCapture() const
 {
     return capture;
 }
 
-Piece Move::getCapturedPiece()
+Piece Move::getCapturedPiece() const
 {
     return capturedPiece;
 }
 
-bool Move::isPromotion()
+bool Move::isPromotion() const
 {
     return promotion;
 }
 
-Piece Move::getPiecePromotedTo()
+Piece Move::getPiecePromotedTo() const
 {
     return piecePromotedTo;
 }
 
-bool Move::isCastlingKingside()
+bool Move::isCastlingKingside() const
 {
     return castlingKingside;
 }
@@ -104,7 +102,7 @@ void Move::setQueensideCastlingKing(Piece castlingKing)
     castlingQueenside = true;
 }
 
-void Move::applyMove(QList<Piece> &pieces)
+void Move::applyMove(QList<Piece> &pieces) const
 {
     if (castlingKingside)
     {
@@ -136,7 +134,7 @@ void Move::applyMove(QList<Piece> &pieces)
     pieces.append(pieceAfterMove);
 }
 
-void Move::undoMove(QList<Piece> &pieces)
+void Move::undoMove(QList<Piece> &pieces) const
 {
     if (castlingKingside)
     {
@@ -167,7 +165,7 @@ void Move::undoMove(QList<Piece> &pieces)
     pieces.append(piece);
 }
 
-void Move::castleKingside(QList<Piece> &pieces)
+void Move::castleKingside(QList<Piece> &pieces) const
 {
     if (!canCastleKingside(pieces))
     {
@@ -199,7 +197,7 @@ void Move::castleKingside(QList<Piece> &pieces)
 
 }
 
-void Move::castleQueenside(QList<Piece> &pieces)
+void Move::castleQueenside(QList<Piece> &pieces) const
 {
     if (!canCastleQueenside(pieces))
     {
@@ -231,7 +229,7 @@ void Move::castleQueenside(QList<Piece> &pieces)
 
 }
 
-void Move::undoCastleKingside(QList<Piece> &pieces)
+void Move::undoCastleKingside(QList<Piece> &pieces) const
 {
     Piece rook;
     Position rookPosition(1, 6);
@@ -257,7 +255,7 @@ void Move::undoCastleKingside(QList<Piece> &pieces)
 
 }
 
-void Move::undoCastleQueenside(QList<Piece> &pieces)
+void Move::undoCastleQueenside(QList<Piece> &pieces) const
 {
     Piece rook;
     Position rookPosition(1, 4);
@@ -283,13 +281,13 @@ void Move::undoCastleQueenside(QList<Piece> &pieces)
 
 }
 
-bool Move::canCastleKingside(const QList<Piece> &pieces)
+bool Move::canCastleKingside(const QList<Piece> &pieces) const
 {
     // TODO
     return true;
 }
 
-bool Move::canCastleQueenside(const QList<Piece> &pieces)
+bool Move::canCastleQueenside(const QList<Piece> &pieces) const
 {
     // TODO
     return true;

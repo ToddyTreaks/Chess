@@ -74,7 +74,7 @@ QString Piece::getIconFileName() const
     return iconFileName;
 }
 
-QString Piece::toString()
+QString Piece::toString() const
 {
     QString pieceToString("%1, %2, %3");
     pieceToString = pieceToString.arg(pgnIdentifier);

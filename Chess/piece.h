@@ -22,7 +22,7 @@ public:
     QString getPgnIdentifier() const;
     QString getIconFileName() const;
 
-    QString toString();
+    QString toString() const;
 
     bool matchPosition(const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces);
 
