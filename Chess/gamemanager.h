@@ -7,6 +7,7 @@
 
 #include "move.h"
 #include "position.h"
+#include "pgnreader.h"
 
 class GameManager
 {
@@ -30,23 +31,7 @@ private:
     QList<Move> movesDone;
     QList<Piece> pieces;
 
-    const unsigned int MAX_PGN_CHARACTERS = 32768;
-
-    void createStartingPieces();
-    void parsePgn(QString fileContent);
-    bool isEndingIndication(QString pgnInstruction);
-    bool isMoveNumber(QString pgnInstruction);
-    void instanciateMoves(QString pgnInstruction, bool whiteToPlay);
-    Position getPrerequisite(QString pgnInstruction);
-    Position getNextPosition(QString pgnInstruction);
-    bool isValidPieceInput(QChar pgnChar);
-    bool isValidRowInput(QChar pgnChar);
-    bool isValidColumnInput(QChar pgnChar);
-    int rowNumber(QChar rowInput);
-    int columnNumber(QChar columnInput);
-    bool isCapture(QString pgnInstruction);
-    bool isPromotion(QString pgnInstruction);
-    QString getPiecePromotedToPgnIdentifier(QString pgnInstruction);
+    PgnReader pgnReader;
 };
 
 #endif // GAMEMANAGER_H

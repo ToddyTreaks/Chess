@@ -5,7 +5,6 @@
 #include <QFile>
 
 #include "position.h"
-#include <QMap>
 
 class MovementStrategy;
 
@@ -30,6 +29,8 @@ public:
     static Piece findPiece(Position position, const QList<Piece> &pieces);
     static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const QList<Piece> &pieces);
     static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces);
+
+    static QList<Piece> createStartingPieces();
 
     bool operator==(const Piece& other) const;
 

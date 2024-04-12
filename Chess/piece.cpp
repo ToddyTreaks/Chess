@@ -179,6 +179,41 @@ bool Piece::canGoTo(const Position &nextPosition, const QList<Piece> &pieces)
     return movementStrategy->canGoTo(position, nextPosition, pieces);
 }
 
+QList<Piece> Piece::createStartingPieces()
+{
+    QList<Piece> pieces;
+
+    pieces.append(Piece(true, "K", Position(1, 5)));
+    pieces.append(Piece(true, "Q", Position(1, 4)));
+    pieces.append(Piece(true, "B", Position(1, 3)));
+    pieces.append(Piece(true, "B", Position(1, 6)));
+    pieces.append(Piece(true, "N", Position(1, 2)));
+    pieces.append(Piece(true, "N", Position(1, 7)));
+    pieces.append(Piece(true, "R", Position(1, 1)));
+    pieces.append(Piece(true, "R", Position(1, 8)));
+
+    for (int i=0; i<8; i++)
+    {
+        pieces.append(Piece(true, "", Position(2, i+1)));
+    }
+
+    pieces.append(Piece(false, "K", Position(8, 5)));
+    pieces.append(Piece(false, "Q", Position(8, 4)));
+    pieces.append(Piece(false, "B", Position(8, 3)));
+    pieces.append(Piece(false, "B", Position(8, 6)));
+    pieces.append(Piece(false, "N", Position(8, 2)));
+    pieces.append(Piece(false, "N", Position(8, 7)));
+    pieces.append(Piece(false, "R", Position(8, 1)));
+    pieces.append(Piece(false, "R", Position(8, 8)));
+
+    for (int i=0; i<8; i++)
+    {
+        pieces.append(Piece(false, "", Position(7, i+1)));
+    }
+
+    return pieces;
+}
+
 bool Piece::operator==(const Piece& other) const
 {
     bool sameColor = (other.isWhite() == colorIsWhite);

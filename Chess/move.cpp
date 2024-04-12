@@ -190,9 +190,11 @@ void Move::castleKingside(QList<Piece> &pieces)
     pieces.removeAll(piece);
     pieces.removeAll(rook);
 
-    piece.position = kingNextPosition;
+    Piece pieceAfterMove(piece);
+    pieceAfterMove.position = kingNextPosition;
+    pieces.append(pieceAfterMove);
+
     rook.position = rookNextPosition;
-    pieces.append(piece);
     pieces.append(rook);
 
 }
@@ -220,9 +222,11 @@ void Move::castleQueenside(QList<Piece> &pieces)
     pieces.removeAll(piece);
     pieces.removeAll(rook);
 
-    piece.position = kingNextPosition;
+    Piece pieceAfterMove(piece);
+    pieceAfterMove.position = kingNextPosition;
+    pieces.append(pieceAfterMove);
+
     rook.position = rookNextPosition;
-    pieces.append(piece);
     pieces.append(rook);
 
 }
@@ -238,15 +242,17 @@ void Move::undoCastleKingside(QList<Piece> &pieces)
     }
     rook = Piece::findPiece(rookPosition, pieces);
 
-    Position kingPreviousPosition(piece.position.row, piece.position.column - 2);
+    Position kingNextPosition(piece.position.row, piece.position.column + 2);
     Position rookPreviousPosition(rookPosition.row, rookPosition.column + 2);
 
-    pieces.removeAll(piece);
+    Piece pieceAfterMove(piece);
+    pieceAfterMove.position = kingNextPosition;
+    pieces.removeAll(pieceAfterMove);
     pieces.removeAll(rook);
 
-    piece.position = kingPreviousPosition;
-    rook.position = rookPreviousPosition;
+
     pieces.append(piece);
+    rook.position = rookPreviousPosition;
     pieces.append(rook);
 
 }
@@ -262,15 +268,17 @@ void Move::undoCastleQueenside(QList<Piece> &pieces)
     }
     rook = Piece::findPiece(rookPosition, pieces);
 
-    Position kingPreviousPosition(piece.position.row, piece.position.column + 2);
+    Position kingNextPosition(piece.position.row, piece.position.column - 2);
     Position rookPreviousPosition(rookPosition.row, rookPosition.column - 3);
 
-    pieces.removeAll(piece);
+    Piece pieceAfterMove(piece);
+    pieceAfterMove.position = kingNextPosition;
+    pieces.removeAll(pieceAfterMove);
     pieces.removeAll(rook);
 
-    piece.position = kingPreviousPosition;
-    rook.position = rookPreviousPosition;
+
     pieces.append(piece);
+    rook.position = rookPreviousPosition;
     pieces.append(rook);
 
 }
