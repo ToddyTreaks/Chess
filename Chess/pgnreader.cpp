@@ -5,7 +5,7 @@
 
 PgnReader::PgnReader() {}
 
-QList<Move> PgnReader::readPgn(QFile &file)
+QList<Move> PgnReader::readPgn(QFile &file) const
 {
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -23,7 +23,7 @@ QList<Move> PgnReader::readPgn(QFile &file)
     return moves;
 }
 
-void PgnReader::parsePgn(QString fileContent, QList<Move> &moves)
+void PgnReader::parsePgn(QString fileContent, QList<Move> &moves) const
 {
     fileContent.replace('\n', ' ');
     QStringList pgnInstructions;
@@ -47,7 +47,7 @@ void PgnReader::parsePgn(QString fileContent, QList<Move> &moves)
 
 }
 
-bool PgnReader::isEndingIndication(QString pgnInstruction)
+bool PgnReader::isEndingIndication(const QString &pgnInstruction) const
 {
     if (pgnInstruction.size() < 2)
     {
@@ -59,7 +59,7 @@ bool PgnReader::isEndingIndication(QString pgnInstruction)
     return possibleFisrtTwoLetters.contains(instructionFirstTwoLetters);
 }
 
-bool PgnReader::isMoveNumber(QString pgnInstruction)
+bool PgnReader::isMoveNumber(const QString &pgnInstruction) const
 {
     if (pgnInstruction.isEmpty())
     {
@@ -68,7 +68,7 @@ bool PgnReader::isMoveNumber(QString pgnInstruction)
     return (pgnInstruction.last(1) == ".");
 }
 
-void PgnReader::instanciateMoves(QString pgnInstruction, bool whiteToPlay, QList<Move> &moves, QList<Piece> &pieces)
+void PgnReader::instanciateMoves(const QString &pgnInstruction, const bool &whiteToPlay, QList<Move> &moves, QList<Piece> &pieces) const
 {
     Move newMove;
 
@@ -120,7 +120,7 @@ void PgnReader::instanciateMoves(QString pgnInstruction, bool whiteToPlay, QList
     moves.append(newMove);
 }
 
-Position PgnReader::getPrerequisite(QString pgnInstruction)
+Position PgnReader::getPrerequisite(QString pgnInstruction) const
 {
     if (!isValidPieceInput(pgnInstruction.at(0)))
     {
@@ -166,7 +166,7 @@ Position PgnReader::getPrerequisite(QString pgnInstruction)
     return prerequisitePosition;
 }
 
-Position PgnReader::getNextPosition(QString pgnInstruction)
+Position PgnReader::getNextPosition(QString pgnInstruction) const
 {
     Position position(0, 0);
     while (pgnInstruction.size() > 2 && !isValidColumnInput(pgnInstruction.back()))
@@ -185,43 +185,43 @@ Position PgnReader::getNextPosition(QString pgnInstruction)
     return position;
 }
 
-bool PgnReader::isValidPieceInput(QChar pgnChar)
+bool PgnReader::isValidPieceInput(const QChar &pgnChar) const
 {
     QList<QChar> validPieceInputList = { 'K', 'Q', 'B', 'N', 'R'};
     return (validPieceInputList.contains(pgnChar));
 }
 
-bool PgnReader::isValidRowInput(QChar pgnChar)
+bool PgnReader::isValidRowInput(const QChar &pgnChar) const
 {
     return ('a' <= pgnChar && pgnChar <= 'h');
 }
 
-bool PgnReader::isValidColumnInput(QChar pgnChar)
+bool PgnReader::isValidColumnInput(const QChar &pgnChar) const
 {
     return ('1' <= pgnChar && pgnChar <= '8');
 }
 
-int PgnReader::rowNumber(QChar rowInput)
+int PgnReader::rowNumber(const QChar &rowInput) const
 {
     return rowInput.unicode() - QChar('1').unicode() + 1;
 }
 
-int PgnReader::columnNumber(QChar columnInput)
+int PgnReader::columnNumber(const QChar &columnInput) const
 {
     return columnInput.unicode() - QChar('a').unicode() + 1;
 }
 
-bool PgnReader::isCapture(QString pgnInstruction)
+bool PgnReader::isCapture(const QString &pgnInstruction) const
 {
     return pgnInstruction.contains('x');
 }
 
-bool PgnReader::isPromotion(QString pgnInstruction)
+bool PgnReader::isPromotion(const QString &pgnInstruction) const
 {
     return pgnInstruction.contains('=');
 }
 
-QString PgnReader::getPiecePromotedToPgnIdentifier(QString pgnInstruction)
+QString PgnReader::getPiecePromotedToPgnIdentifier(QString pgnInstruction) const
 {
     while (pgnInstruction.size() > 1 && pgnInstruction.front() != '=')
     {
