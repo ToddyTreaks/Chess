@@ -24,7 +24,7 @@ public:
 
     QString toString() const;
 
-    bool matchPosition(const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces);
+    bool matchPosition(const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces) const;
 
     static Piece findPiece(Position position, const QList<Piece> &pieces);
     static Piece findPiece(QString pgnIdentifier, bool colorIsWhite, const QList<Piece> &pieces);
@@ -36,7 +36,7 @@ public:
 
 protected:
 
-    bool canGoTo(const Position &targetPosition, const QList<Piece> &pieces);
+    bool canGoTo(const Position &targetPosition, const QList<Piece> &pieces) const;
 
     bool colorIsWhite;
     QString pgnIdentifier;

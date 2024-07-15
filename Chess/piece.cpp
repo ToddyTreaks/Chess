@@ -150,7 +150,7 @@ Piece Piece::findPiece(QString pgnIdentifier, bool colorIsWhite, const Position 
 
 }
 
-bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces)
+bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, const QList<Piece> &pieces) const
 {
     if (prerequisite.row != 0 && prerequisite.row != position.row)
     {
@@ -165,7 +165,7 @@ bool Piece::matchPosition(const Position &nextPosition, Position prerequisite, c
     return canGoTo(nextPosition, pieces);
 }
 
-bool Piece::canGoTo(const Position &nextPosition, const QList<Piece> &pieces)
+bool Piece::canGoTo(const Position &nextPosition, const QList<Piece> &pieces) const
 {
     if (nextPosition == position)
     {
